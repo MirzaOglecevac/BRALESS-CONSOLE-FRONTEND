@@ -1,0 +1,74 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="elements/image-box.html">
+<link rel="import" href="elements/search-box.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-images">
+  <template>
+    <style include="shared-styles">
+
+      #mainContainer {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin: 0 auto;
+        min-width: 350px;
+        font-family: "sans-serif", "Roboto";
+      }
+
+      #mainContainer > p {
+        text-transform: uppercase;
+        color: #333;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      #searchBoxContainer {
+        width: 215px;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+
+      #imagesContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+    </style>
+
+
+    <div id="mainContainer">
+
+      <p>Images</p>
+
+      <div id="searchBoxContainer">
+        <search-box></search-box>
+      </div>
+
+      <br/><br/>
+
+      <div id="imagesContainer">
+        <!-- Dom repeat -->
+        <image-box></image-box>
+        <image-box></image-box>
+        <image-box></image-box>
+        <image-box></image-box>
+      </div>
+    </div>
+
+
+  </template>
+
+  <script>
+    class PageImages extends Polymer.Element {
+      static get is() { return 'page-images'; }
+    }
+
+    window.customElements.define(PageImages.is, PageImages);
+  </script>
+</dom-module>

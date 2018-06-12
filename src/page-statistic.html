@@ -1,0 +1,63 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="elements/info-box.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-statistic">
+  <template>
+    <style include="shared-styles">
+
+      #mainContainer {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 0 auto;
+        min-width: 350px;
+        font-family: "sans-serif", "Roboto";
+      }
+
+      #mainContainer > p {
+        text-transform: uppercase;
+        color: #333;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      #statisticContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+
+    </style>
+
+    <div id="mainContainer">
+
+      <p>Statistics</p>
+
+      <div id="statisticContainer">
+
+        <!-- Dom repeat -->
+        <info-box></info-box>
+        <info-box></info-box>
+        <info-box></info-box>
+        <info-box></info-box>
+
+      </div>
+
+    </div>
+
+
+
+  </template>
+
+  <script>
+    class PageStatistic extends Polymer.Element {
+      static get is() { return 'page-statistic'; }
+    }
+
+    window.customElements.define(PageStatistic.is, PageStatistic);
+  </script>
+</dom-module>

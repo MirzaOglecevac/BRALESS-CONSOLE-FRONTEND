@@ -1,0 +1,73 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="elements/search-box.html">
+<link rel="import" href="elements/user-card.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-users">
+  <template>
+    <style include="shared-styles">
+
+      #mainContainer {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 0 auto;
+        min-width: 350px;
+        font-family: "sans-serif", "Roboto";
+      }
+
+      #mainContainer > p {
+        text-transform: uppercase;
+        color: #333;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      #searchBoxContainer {
+        width: 215px;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+
+      #usersContainer {
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+      }
+
+    </style>
+
+
+    <div id="mainContainer">
+
+      <p>Pornstars</p>
+
+      <div id="searchBoxContainer">
+        <search-box></search-box>
+      </div>
+
+      <br/><br/>
+
+      <div id="usersContainer">
+        <!-- Dom repeat -->
+        <user-card></user-card>
+      </div>
+
+
+    </div>
+
+  </template>
+
+  <script>
+    class PageUsers extends Polymer.Element {
+      static get is() { return 'page-users'; }
+    }
+
+    window.customElements.define(PageUsers.is, PageUsers);
+  </script>
+</dom-module>

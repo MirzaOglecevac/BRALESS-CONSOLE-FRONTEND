@@ -1,0 +1,46 @@
+{
+  "name": "mp-video",
+  "description": "YouTube, Vimeo and HTML5 video playback web component based on Polymer 2.0",
+  "version": "2.0.0",
+  "homepage": "https://minas.pachnis.com",
+  "authors": [
+    "Minas Pachnis <minas@bugeffect.com>"
+  ],
+  "keywords": [
+    "youtube",
+    "vimeo",
+    "video",
+    "player",
+    "html5",
+    "polymer",
+    "web-components"
+  ],
+  "license": "MIT",
+  "main": "mp-video.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpachnis/mp-video.git"
+  },
+  "dependencies": {
+    "polymer": "^2.0.0",
+    "paper-toast": "^2.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "^6.0.0",
+    "iron-component-page": "polymerelements/iron-component-page#^v2.0.0",
+    "iron-demo-helpers": "polymerelements/iron-demo-helpers#^v2.0.0",
+    "iron-test-helpers": "polymerelements/iron-test-helpers#^v2.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^3.0.0-rc.1",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "afa56d369dcf13bad451b3b9e3e66f459a6da048"
+  },
+  "_source": "https://github.com/mpachnis/mp-video.git",
+  "_target": "^2.0.0",
+  "_originalSource": "mp-video",
+  "_direct": true
+}

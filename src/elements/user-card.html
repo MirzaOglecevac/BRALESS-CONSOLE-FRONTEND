@@ -1,0 +1,128 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="user-card">
+    <template>
+        <style include="shared-styles">
+
+            #userCard {
+                display: flex;
+                flex-direction: row;
+                min-width: 320px;
+                background-color: #fff;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                font-family: "sans-serif", "Roboto";
+                cursor: pointer;
+            }
+
+
+            #userCard:hover {
+                background-color: #ddd;
+            }
+
+
+            #userCard img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: inline-block;
+                padding: 5px;
+            }
+
+
+            #userCard > div {
+                display: inline-block;
+                box-sizing: border-box;
+                text-align: center;
+                height: 40px;
+            }
+
+
+            #userCard > div:first-child, #userCard > div:last-child{
+                width: 10%;
+            }
+
+
+            #userCard > div:nth-child(2), #userCard > div:nth-child(4){
+                width: 25%;
+            }
+
+
+            #userCard > div:nth-child(3){
+                width: 30%;
+            }
+
+
+            #userCard span, #userCard iron-icon {
+                position: relative;
+                top: 5px;
+            }
+
+
+            #name {
+                display: inline-block;
+                color: #333;
+                padding: 5px;
+            }
+
+
+            #email {
+                display: inline-block;
+                color: #333;
+                opacity: 0.54;
+                padding: 5px;
+            }
+
+
+            #dateRegistered {
+                display: inline-block;
+                color: #333;
+                padding: 5px;
+            }
+
+
+            #userCard iron-icon {
+                --iron-icon-width: 20px;
+                --iron-icon-height: 20px;
+                --iron-icon-fill-color: #555;
+                cursor: pointer;
+            }
+
+
+        </style>
+
+        <div id="userCard">
+            <div>
+                <img src="../../images/profile.png" />
+            </div>
+
+            <div>
+                <span id="name"> New user </span>
+            </div>
+
+            <div>
+                <span id="email"> user@gmail.com </span>
+            </div>
+
+            <div>
+                <span id="dateRegistered"> March 2018</span>
+            </div>
+
+            <div id="icons">
+                <iron-icon icon="delete"></iron-icon>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class UserCard extends Polymer.Element {
+            static get is() { return 'user-card'; }
+        }
+
+        window.customElements.define(UserCard.is, UserCard);
+    </script>
+</dom-module>

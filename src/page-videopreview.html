@@ -1,0 +1,263 @@
+
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-videopreview">
+  <template>
+    <style include="shared-styles">
+
+      #mainContainer {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin: 0 auto;
+        min-width: 350px;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      #mainContainer > p {
+        cursor: pointer;
+      }
+
+
+      iron-icon {
+        --iron-icon-fill-color: #333;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        cursor: pointer;
+      }
+
+
+      #arrowBack {
+        position: relative;
+        bottom: 2px;
+      }
+
+
+      a {
+        text-decoration: none;
+        color: #333 !important;
+        text-transform: uppercase !important;
+      }
+
+
+      embed {
+        height: 350px;
+        max-width: 550px;
+        box-shadow: 3px 4px 2px rgba(150,150,150,0.5);
+      }
+
+
+      embed:focus {
+        outline: none;
+      }
+
+
+      table td {
+        padding: 5px;
+      }
+
+
+      table .left {
+        width: 160px;
+        color: #333;
+        opacity: 0.84;
+      }
+
+      table .inputElement {
+        outline: none;
+        border: none;
+        background-color: #fff;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        padding: 5px;
+        font-family: "sans-serif", "Roboto Mono";
+        font-size: 15px;
+        color: #333;
+        width: 200px;
+        border-radius: 5px;
+        text-indent: 5px;
+      }
+
+
+      #buttonsContainer {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+      }
+
+      paper-button {
+        padding: 5px;
+        width: 100px;
+      }
+
+      #editButton {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+      }
+
+
+      #saveButton {
+        background-color: #B200B7;
+        color: #fff;
+        display: none;
+        text-align: center;
+      }
+
+
+      #deleteButton {
+        background-color: #f73722;
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        right: 10px;
+      }
+
+    </style>
+
+
+    <div id="mainContainer">
+
+      <br/>
+
+      <a href="/videos">
+        <p>
+          <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
+          Back to videos page
+        </p>
+      </a>
+
+
+      <embed src="https://www.xvideos.com/embedframe/24736159">
+
+      <br/>
+
+        <table>
+          <tr>
+            <td class="left"> Title: </td>
+            <td>
+              <input id="title" class="inputElement" value="Test" disabled/>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="left"> Video URL: </td>
+            <td>
+              <input id="videourl" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="left"> Video thumbnail: </td>
+            <td>
+              <input id="videothumbnail" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="left"> Date created: </td>
+            <td>
+              <input id="date" type="number" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="left"> Duration: </td>
+            <td>
+              <input id="duration" type="number" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="left"> HD: </td>
+            <td>
+              <input id="hd" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+          <!--<tr>-->
+            <!--<td class="left"> Pornstar: </td>-->
+            <!--<td>-->
+              <!--<input class="inputElement" />-->
+            <!--</td>-->
+          <!--</tr>-->
+
+          <tr>
+            <td class="left"> Tags: </td>
+            <td>
+              <input id="tags" class="inputElement" disabled/>
+            </td>
+          </tr>
+
+        </table>
+
+
+        <br/>
+
+        <div id="buttonsContainer">
+          <paper-button id="editButton" raised on-click="_editVideo">Edit</paper-button>
+          <paper-button id="saveButton" raised on-click="_saveVideo">Save</paper-button>
+          <paper-button id="deleteButton" raised on-click="_deleteVideo">Delete</paper-button>
+        </div>
+
+        <br/>
+
+    </div>
+
+  </template>
+
+  <script>
+    class PageVideoPreview extends Polymer.Element {
+      static get is() { return 'page-videopreview'; }
+
+        static get properties() {
+            return {
+
+            };
+        }
+
+      /* FUNCTIONS */
+
+        ready(){
+            super.ready();
+        }
+
+
+        _editVideo(){
+            this.$.title.disabled = false;
+            this.$.videourl.disabled = false;
+            this.$.videothumbnail.disabled = false;
+            this.$.date.disabled = false;
+            this.$.duration.disabled = false;
+            this.$.hd.disabled = false;
+            this.$.tags.disabled = false;
+
+            this.$.saveButton.style = "display: block";
+        }
+
+
+        _saveVideo(){
+            // function
+            this.$.saveButton.style = "display: none";
+            this.$.title.disabled = true;
+            this.$.videourl.disabled = true;
+            this.$.videothumbnail.disabled = true;
+            this.$.date.disabled = true;
+            this.$.duration.disabled = true;
+            this.$.hd.disabled = true;
+            this.$.tags.disabled = true;
+        }
+
+
+        _deleteVideo(){
+
+        }
+    }
+
+    window.customElements.define(PageVideoPreview.is, PageVideoPreview);
+  </script>
+</dom-module>

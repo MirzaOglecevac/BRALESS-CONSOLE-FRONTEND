@@ -1,0 +1,259 @@
+
+<!-- Element imports -->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="my-icons.html">
+
+<!-- Page imports -->
+<link rel="lazy-import" href="page-admins.html">
+<link rel="lazy-import" href="page-users.html">
+<link rel="lazy-import" href="page-pornstars.html">
+<link rel="lazy-import" href="page-pornstarpreview.html">
+<link rel="lazy-import" href="page-videos.html">
+<link rel="lazy-import" href="page-videopreview.html">
+<link rel="lazy-import" href="page-images.html">
+<link rel="lazy-import" href="page-statistic.html">
+<link rel="lazy-import" href="page-terms.html">
+<link rel="lazy-import" href="page-404.html">
+
+
+<!-- Request -->
+<script src="background/core/requestHandler.js"></script>
+
+<!-- Models -->
+<script src="background/models/adminModel.js"></script>
+
+<!-- ViewModels -->
+<script src="background/viewModels/adminVM.js"></script>
+
+
+<dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+
+        display: block;
+      }
+
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+
+      app-toolbar #logoImage {
+        display: inline-block;
+        width: 80%;
+        height: 40px;
+        padding-left: 5px;
+      }
+
+
+      app-toolbar #userImage {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        position: fixed;
+        right: 15px;
+        bottom: 32px;
+        cursor: pointer;
+      }
+
+      app-toolbar #menuIcon {
+        position:relative;
+        top:10px;
+      }
+
+
+      app-header {
+        background-color: #fff !important;
+        height: 40px;
+        box-shadow: 0 2px 1px rgba(150,150,150, 0.5);
+      }
+
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: #fff;
+        text-transform: uppercase;
+        font-family: 'sans-serif', 'Roboto';
+        font-size: 13px;
+        line-height: 40px;
+        border-left: 5px solid transparent;
+        outline: none;
+      }
+
+      .drawer-list a:hover {
+        background-color: #888;
+        border-left: 5px solid #B200B7;
+      }
+
+
+      /*.drawer-list a.iron-selected {*/
+        /*color: #fff;*/
+      /*}*/
+    </style>
+
+    <app-location
+        route="{{route}}"
+        url-space-regex="^[[rootPath]]">
+    </app-location>
+
+    <app-route
+        route="{{route}}"
+        pattern="[[rootPath]]:page"
+        data="{{routeData}}"
+        tail="{{subroute}}">
+    </app-route>
+
+    <app-drawer-layout fullbleed narrow="{{narrow}}">
+      <!-- Drawer content -->
+      <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
+
+        <app-toolbar>
+          <img id="logoImage" src="../images/braless-logo-white.png" />
+        </app-toolbar>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a id="admins" name="page-admins" href="[[rootPath]]admins" on-click="_styleClickedMenuItem">Admins</a>
+          <a id="users" name="page-users" href="[[rootPath]]users" on-click="_styleClickedMenuItem">Users</a>
+          <a id="pornstars" name="page-pornstars" href="[[rootPath]]pornstars" on-click="_styleClickedMenuItem">Pornstars</a>
+          <a id="videos" name="page-videos" href="[[rootPath]]videos" on-click="_styleClickedMenuItem">Videos</a>
+          <a id="images" name="page-images" href="[[rootPath]]images" on-click="_styleClickedMenuItem">images</a>
+          <a id="statistic" name="page-statistic" href="[[rootPath]]statistic" on-click="_styleClickedMenuItem">Statistic</a>
+          <a id="terms" name="page-terms" href="[[rootPath]]terms" on-click="_styleClickedMenuItem">Terms and conditions</a>
+        </iron-selector>
+      </app-drawer>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region>
+
+        <app-header slot="header" fixed effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button id="menuIcon" icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <img id="userImage" src="../images/profile.png"/>
+          </app-toolbar>
+        </app-header>
+
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            fallback-selection="view404"
+            role="main">
+          <page-admins name="admins"></page-admins>
+          <page-users name="users"></page-users>
+          <page-pornstars name="pornstars"></page-pornstars>
+          <page-pornstarpreview name="pornstarpreview"></page-pornstarpreview>
+          <page-videos name="videos"></page-videos>
+          <page-videopreview name="videopreview"></page-videopreview>
+          <page-images name="images"></page-images>
+          <page-statistic name="statistic"></page-statistic>
+          <page-terms name="terms"></page-terms>
+          <page-404 name="404"></page-404>
+        </iron-pages>
+      </app-header-layout>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+    // Gesture events like tap and track generated from touch will not be
+    // preventable, allowing for better scrolling performance.
+    Polymer.setPassiveTouchGestures(true);
+
+    class MyApp extends Polymer.Element {
+      static get is() { return 'my-app'; }
+
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          routeData: Object,
+          subroute: Object,
+          // This shouldn't be neccessary, but the Analyzer isn't picking up
+          // Polymer.Element#rootPath
+          rootPath: String,
+          menuItems: {
+              type: Array,
+              value: ['admins', 'users', 'pornstars', 'videos', 'images', 'statistic', 'terms']
+          },
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+        ];
+      }
+
+
+      _styleClickedMenuItem(event){
+
+          var clickedId = event.target.id;
+
+
+//          for(var i = 0; i < this.menuItems.length; i++){
+//              //console.log(this.menuItems[i]);
+//              if(clickedId === this.menuItems[i]){
+//                  this.$.admins.style = "border-left: 10px solid green;";
+//              }else {
+//                  this.$.menuItems[i].style = "border-right: 10px solid green;";
+//              }
+//          }
+
+      }
+
+      _routePageChanged(page) {
+        // If no page was found in the route data, page will be an empty string.
+        // Default to 'view1' in that case.
+        this.page = page || 'view1';
+
+        // Close a non-persistent drawer when the page & route are changed.
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      }
+
+      _pageChanged(page) {
+        // Load page import on demand. Show 404 page if fails
+        const resolvedPageUrl = this.resolveUrl('page-' + page + '.html');
+        Polymer.importHref(
+            resolvedPageUrl,
+            null,
+            this._showPage404.bind(this),
+            true);
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+    }
+
+    window.customElements.define(MyApp.is, MyApp);
+  </script>
+</dom-module>

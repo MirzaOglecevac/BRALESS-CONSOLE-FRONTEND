@@ -1,0 +1,95 @@
+
+<!-- Imports -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="elements/admin-card.html">
+<link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/adminVM.js"></script>
+<script src="background/models/adminModel.js"></script>
+<script src="background/core/configuration.js"></script>
+
+
+<dom-module id="page-admins">
+  <template>
+    <style include="shared-styles">
+
+
+      #mainContainer {
+        width: 70%;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+
+      p {
+        font-family: "sans-serif", "Roboto Mono";
+        text-transform: uppercase;
+        color: #333;
+        opacity: 0.84;
+      }
+
+
+      #container {
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+      }
+
+
+    </style>
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
+
+    <div id="mainContainer">
+      <p>Admins info</p>
+
+      <div id="container">
+        <!-- Dom repeat -->
+
+        <template id="adminList" is="dom-repeat" items="[[admins]]" as="admin">
+          <admin-card entry="[[admin]]"></admin-card>
+        </template>
+
+
+      </div>
+    </div>
+
+
+
+
+  </template>
+
+  <script>
+    class PageAdmins extends AdminVM(Polymer.Element, AdminModel, Configuration) {
+      static get is() { return 'page-admins'; }
+
+        static get properties() {
+            return {
+              admins: {
+                  type: Array,
+                  observer: '_adminDataChanged'
+              }
+            };
+        }
+
+
+        ready(){
+          super.ready();
+          this.getAdmins(this.$.ironAjax);
+        }
+
+
+        _adminDataChanged(){
+            console.log(this.admins);
+            this.$.adminList.render();
+        }
+    }
+
+    window.customElements.define(PageAdmins.is, PageAdmins);
+  </script>
+</dom-module>

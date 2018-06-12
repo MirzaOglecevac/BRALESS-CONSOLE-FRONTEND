@@ -1,0 +1,141 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="admin-card">
+    <template>
+        <style include="shared-styles">
+
+            #adminCard {
+                display: flex;
+                flex-direction: row;
+                min-width: 320px;
+                background-color: #fff;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                font-family: "sans-serif", "Roboto";
+                cursor: pointer;
+            }
+
+
+            #adminCard:hover {
+                background-color: #ddd;
+            }
+
+
+            #adminCard img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: inline-block;
+                padding: 5px;
+            }
+
+
+            #adminCard > div {
+                display: inline-block;
+                box-sizing: border-box;
+                text-align: center;
+                height: 40px;
+            }
+
+
+            #adminCard > div:first-child, #adminCard > div:last-child{
+                width: 10%;
+            }
+
+
+            #adminCard > div:nth-child(2), #adminCard > div:nth-child(4){
+                width: 25%;
+            }
+
+
+            #adminCard > div:nth-child(3){
+                width: 30%;
+            }
+
+
+            #adminCard span, #adminCard iron-icon {
+                position: relative;
+                top: 5px;
+            }
+
+
+            #name {
+                display: inline-block;
+                color: #333;
+                padding: 5px;
+            }
+
+
+            #email {
+                display: inline-block;
+                color: #333;
+                opacity: 0.54;
+                padding: 5px;
+            }
+
+
+            #scope {
+                display: inline-block;
+                color: #333;
+                padding: 5px;
+            }
+
+
+            #adminCard iron-icon {
+                --iron-icon-width: 20px;
+                --iron-icon-height: 20px;
+                --iron-icon-fill-color: #555;
+                cursor: pointer;
+            }
+
+
+        </style>
+
+        <div id="adminCard">
+            <div>
+                <img src="../../images/profile.png" />
+            </div>
+
+            <div>
+                <span id="name"> {{entry.name}} </span>
+            </div>
+
+            <div>
+                <span id="email"> {{entry.email}}</span>
+            </div>
+
+            <div>
+                <span id="scope">Admin</span>
+            </div>
+
+            <div id="icons">
+                <iron-icon icon="create"></iron-icon>
+                <iron-icon icon="delete"></iron-icon>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class AdminCard extends Polymer.Element {
+            static get is() { return 'admin-card'; }
+
+            static get properties() {
+                return {
+                   entry: Object
+                };
+            }
+
+
+            ready(){
+                super.ready();console.log('Ready ' + this.entry);
+            }
+
+        }
+
+        window.customElements.define(AdminCard.is, AdminCard);
+    </script>
+</dom-module>

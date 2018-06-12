@@ -1,0 +1,100 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="video-preview-box">
+    <template>
+        <style include="shared-styles">
+
+
+            #mainContainer {
+                display: flex;
+                flex-direction: column;
+                width: 230px;
+                height: 200px;
+                font-family: "sans-serif", "Roboto";
+                font-size: 14px;
+                background-color: #e5dddc;
+                box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+                cursor: pointer;
+                margin: 0 15px 15px 0;
+            }
+
+
+            #mainContainer:hover {
+                box-shadow: 3px 4px 2px rgba(150,150,150,0.5), -3px 4px 2px rgba(150,150,150,0.5);
+            }
+
+
+            #info {
+                padding: 0 5px;
+            }
+
+
+            #info > p {
+                padding: 5px 0;
+                margin: 0;
+            }
+
+
+            #videoThumbnail img {
+                width: 100%;
+                height: 130px;
+            }
+
+
+            #likesAndDislikes {
+                float: right;
+            }
+
+            #likesAndDislikes iron-icon {
+                --iron-icon-width: 18px;
+                --iron-icon-height: 18px;
+            }
+
+
+            #likes iron-icon {
+                --iron-icon-fill-color: #3ee84c;
+            }
+
+
+            #dislikes iron-icon {
+                --iron-icon-fill-color: #f24737;
+            }
+
+        </style>
+
+
+        <div id="mainContainer">
+            <div id="videoThumbnail">
+                <img src="https://img-egc.xvideos-cdn.com/videos/thumbslll/88/35/7e/88357e4cd16980e1acd73c31a7ce40fd/88357e4cd16980e1acd73c31a7ce40fd.3.jpg" />
+            </div>
+            <div id="info">
+                <p> Video Title</p>
+                <div id="videoData">
+                    <span id="views">
+                        124k views
+                    </span>
+
+                    <span id="likesAndDislikes">
+                        <span id="likes"> 50k
+                            <iron-icon icon="thumb-up"></iron-icon>
+                        </span>
+                        <span id="dislikes"> 10k
+                            <iron-icon icon="thumb-down"></iron-icon>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class VideoPreviewBox extends Polymer.Element {
+            static get is() { return 'video-preview-box'; }
+        }
+
+        window.customElements.define(VideoPreviewBox.is, VideoPreviewBox);
+    </script>
+</dom-module>

@@ -1,0 +1,42 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="pornstar-info-box">
+    <template>
+        <style include="shared-styles">
+
+
+            #infoBox img {
+                width: 40px;
+                height: 40px;
+                box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+                border-radius: 50%;
+            }
+
+            #infoBox span {
+                position: relative;
+                bottom: 14px;
+            }
+
+        </style>
+
+
+        <div id="infoBox">
+            <img src="https://img-hw.xvideos.com/videos/profiles/profthumb/3d/3d/77/lamlam007/profile_2_big.jpg">
+            <span> Alena LamLam </span>
+        </div>
+
+
+
+
+    </template>
+
+    <script>
+        class PornstarInfoBox extends Polymer.Element {
+            static get is() { return 'pornstar-info-box'; }
+        }
+
+        window.customElements.define(PornstarInfoBox.is, PornstarInfoBox);
+    </script>
+</dom-module>

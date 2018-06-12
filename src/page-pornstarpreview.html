@@ -1,0 +1,320 @@
+
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="elements/pornstar-info-box.html">
+<link rel="import" href="elements/info-box.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-pornstarpreview">
+  <template>
+    <style include="shared-styles">
+
+
+      #mainContainer {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin: 0 auto;
+        min-width: 350px;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+      #arrowBack {
+        position: relative;
+        bottom: 2px;
+      }
+
+
+      a {
+        text-decoration: none;
+        color: #333 !important;
+        text-transform: uppercase !important;
+      }
+
+
+      #infoSection {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 800px;
+      }
+
+
+      table td {
+        padding: 5px;
+      }
+
+
+      table .left {
+        width: 160px;
+        color: #333;
+        opacity: 0.84;
+      }
+
+      table .inputElement {
+        outline: none;
+        border: none;
+        background-color: #fff;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        padding: 5px;
+        font-family: "sans-serif", "Roboto Mono";
+        font-size: 15px;
+        color: #333;
+        width: 200px;
+        border-radius: 5px;
+        text-indent: 5px;
+      }
+
+
+      table .image {
+        width: 300px;
+      }
+
+
+
+      #additionalInfo {
+        color: #333;
+        opacity: 0.84;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+
+      #aboutText {
+        vertical-align: top;
+      }
+
+
+      textarea {
+        outline: none;
+        border: none;
+        width: 300px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        resize: none;
+        padding: 5px;
+        text-indent: 5px;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+
+
+      #buttonsContainer {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+      }
+
+
+      paper-button {
+        padding: 5px;
+        width: 100px;
+      }
+
+
+      #editButton {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+      }
+
+
+      #saveButton {
+        background-color: #B200B7;
+        color: #fff;
+        display: none;
+        text-align: center;
+      }
+
+
+      #deleteButton {
+        background-color: #f73722;
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        right: 10px;
+      }
+
+
+      #hiddenImage {
+        position: fixed;
+        z-index: 1000;
+        right: 47vh;
+        bottom: 24vh;
+        width: 250px;
+        height: 200px;
+        border: 5px solid #B200B7;
+        border-radius: 5px;
+        display: none;
+      }
+
+    </style>
+
+
+
+    <img id="hiddenImage" src=""/>
+
+
+    <div id="mainContainer">
+
+      <br/>
+
+      <a href="/pornstars">
+        <p>
+          <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
+          Back to pornstars page
+        </p>
+      </a>
+
+      <br/>
+
+      <pornstar-info-box></pornstar-info-box>
+
+
+      <br/>
+
+      <div id="infoSection">
+        <info-box></info-box>
+        <info-box></info-box>
+        <info-box></info-box>
+        <info-box></info-box>
+      </div>
+
+      <br/>
+
+      <p id="additionalInfo">Additional info: </p>
+
+      <table>
+        <tr>
+          <td class="left"> Name: </td>
+          <td>
+            <input id="name" class="inputElement" value="Test" disabled/>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="left"> Gender: </td>
+          <td>
+            <input id="gender" class="inputElement"  disabled/>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="left"> Age: </td>
+          <td>
+            <input id="age" type="number" class="inputElement"  disabled/>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="left"> Country: </td>
+          <td>
+            <input id="country" class="inputElement"  disabled/>
+          </td>
+        </tr>
+
+        <tr>
+          <td id="aboutText" class="left"> About me: </td>
+          <td>
+            <textarea id="about"  disabled></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="left image"> Profile image: </td>
+          <td>
+            <input id="profileImage" class="inputElement image"  on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="https://img-hw.xvideos.com/videos/profiles/profthumb/f7/64/fa/sara-jay/profile_1_big.jpg"  disabled/>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="left"> Banner image: </td>
+          <td>
+            <input id="bannerImage" class="inputElement image" on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="https://img-hw.xvideos.com/videos/profiles/banners/f7/64/fa/sara-jay/banner_2_big.jpg"  disabled/>
+          </td>
+        </tr>
+
+      </table>
+
+
+      <br/>
+
+      <div id="buttonsContainer">
+        <paper-button id="editButton" raised on-click="_editPornstar">Edit</paper-button>
+        <paper-button id="saveButton" raised on-click="_savePornstar">Save</paper-button>
+        <paper-button id="deleteButton" raised on-click="_deletePornstar">Delete</paper-button>
+      </div>
+
+      <br/>
+
+
+    </div>
+
+  </template>
+
+  <script>
+    class PagePornstarPreview extends Polymer.Element {
+      static get is() { return 'page-pornstarpreview'; }
+
+        static get properties() {
+            return {
+
+            };
+        }
+
+      /* FUNCTIONS */
+
+        ready(){
+            super.ready();
+        }
+
+
+        _getImageUrl(event){
+            this.$.hiddenImage.src=event.path[0].defaultValue;
+            this.$.hiddenImage.style="display: block";
+        }
+
+
+        _hideImage(){
+            this.$.hiddenImage.style="display: none";
+        }
+
+        _editPornstar(){
+            this.$.name.disabled = false;
+            this.$.gender.disabled = false;
+            this.$.age.disabled = false;
+            this.$.country.disabled = false;
+            this.$.about.disabled = false;
+            this.$.profileImage.disabled = false;
+            this.$.bannerImage.disabled = false;
+
+            this.$.saveButton.style = "display: block";
+        }
+
+
+        _savePornstar(){
+            // function
+            this.$.saveButton.style = "display: none";
+            this.$.name.disabled = true;
+            this.$.gender.disabled = true;
+            this.$.age.disabled = true;
+            this.$.country.disabled = true;
+            this.$.about.disabled = true;
+            this.$.profileImage.disabled = true;
+            this.$.bannerImage.disabled = true;
+        }
+
+
+        _deletePornstar(){
+
+        }
+    }
+
+    window.customElements.define(PagePornstarPreview.is, PagePornstarPreview);
+  </script>
+</dom-module>

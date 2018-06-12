@@ -1,0 +1,134 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-terms">
+  <template>
+    <style include="shared-styles">
+
+      #mainContainer {
+        width: 70%;
+        min-width: 350px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        font-family: "sans-serif", "Roboto";
+      }
+      
+
+      #mainContainer > p {
+        text-transform: uppercase;
+        color: #333;
+      }
+      
+      
+      #textContainer {
+        background-color: #fff;
+        padding: 0 10px 10px 5px;
+        height: 75vh;
+        overflow: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+      }
+
+
+      #textContainer paper-textarea {
+        padding: 0 10px 10px 5px;
+        color: #333;
+        opacity: 0.84;
+      }
+
+
+      #buttonContainer > * {
+        float: right;
+        position: relative;
+        top: 15px;
+        padding: 5px;
+        width: 120px;
+      }
+
+
+      #editButton {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+      }
+
+
+      #saveButton {
+        background-color: #B200B7;
+        color: #fff;
+        display: none;
+        text-align: center;
+      }
+
+
+    </style>
+
+
+    <div id="mainContainer">
+
+      <p>Terms and conditions</p>
+      
+      <div id="textContainer">
+        <paper-textarea id="textForEdit" value="{{terms}}"></paper-textarea>
+      </div>
+
+      <div id="buttonContainer">
+        <paper-button id="editButton" on-click="_editTerms">Edit</paper-button>
+        <paper-button id="saveButton" raised on-click="_saveTerms">Save</paper-button>
+      </div>
+
+    </div>
+
+
+
+
+  </template>
+
+  <script>
+    class PageTerms extends Polymer.Element {
+      static get is() { return 'page-terms'; }
+
+        static get properties() {
+            return {
+                demo: {
+                    type: String,
+                    value: 'demo'
+                },
+                terms: {
+                    type: String,
+                    value: "Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili.Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili."
+                }
+            };
+        }
+
+
+      /* FUNCTIONS */
+
+      ready(){
+          super.ready();
+          this.$.textForEdit.disabled = true;
+      }
+
+
+      _editTerms(){
+          this.$.saveButton.style = "display: block;";
+          this.$.textForEdit.disabled = false;
+      }
+
+
+      _saveTerms(){
+          this.$.saveButton.style = "display: none;";
+          this.$.textForEdit.disabled = true;
+      }
+
+    }
+
+    window.customElements.define(PageTerms.is, PageTerms);
+  </script>
+</dom-module>
