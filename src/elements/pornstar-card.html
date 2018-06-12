@@ -94,21 +94,21 @@
 
         </style>
 
-        <div id="pornstarCard">
+        <div id="pornstarCard" on-click="_redirectToPornstarPreviewPage">
             <div>
-                <img src="../../images/profile.png" />
+                <img src$="{{_checkImage(entry.profile_image)}}" />
             </div>
 
             <div>
-                <span id="name"> Rebecca Moore </span>
+                <span id="name"> {{entry.name}} </span>
             </div>
 
             <div>
-                <span id="country"> USA </span>
+                <span id="country"> {{entry.country}} </span>
             </div>
 
             <div>
-                <span id="subscribers">25145</span>
+                <span id="subscribers"> {{entry.default_subscribers}} </span>
             </div>
 
             <div id="icons">
@@ -121,6 +121,26 @@
     <script>
         class PornstarCard extends Polymer.Element {
             static get is() { return 'pornstar-card'; }
+
+            static get properties(){
+                return {
+                    entry: Object
+                }
+            }
+
+
+            _checkImage(image){
+                if(image){
+                    return image;
+                }else {
+                    return '../../images/pornstar_placeholder.jpg';
+                }
+            }
+
+
+            _redirectToPornstarPreviewPage(){
+                location.href = '/pornstarpreview/' + this.entry.id;
+            }
         }
 
         window.customElements.define(PornstarCard.is, PornstarCard);

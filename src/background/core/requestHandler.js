@@ -52,7 +52,7 @@ var RequestHandler = (function(){
          * @param url
          * @param request
          */
-        this.deleteRequest = function (url,request,ironAjax,thisApp) {
+        this.deleteRequest = function(url,request,ironAjax,thisApp) {
             ironAjax.url = url;
             ironAjax.method = 'DELETE';
             this.handleResponse(ironAjax, request, thisApp);

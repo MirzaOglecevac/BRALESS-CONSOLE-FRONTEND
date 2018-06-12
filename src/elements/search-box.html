@@ -45,8 +45,8 @@
 
 
         <div id="container">
-            <input id="input" type="text" />
-            <div id="searchIcon">
+            <input id="input" type="text" value="{{searchValue}}"/>
+            <div id="searchIcon" on-click="_search">
                 <iron-icon icon="search"></iron-icon>
             </div>
         </div>
@@ -57,6 +57,28 @@
     <script>
         class SearchBox extends Polymer.Element {
             static get is() { return 'search-box'; }
+
+            static get properties() {
+                return {
+
+                };
+            }
+
+
+            ready(){
+                super.ready();
+            }
+
+
+            _search(){
+                var search = this.$.input.value;
+                this.dispatchEvent(new CustomEvent('search-value', {
+                    bubbles: true, composed: true, detail: {
+                        value: search
+                    }
+                }));
+            }
+
         }
 
         window.customElements.define(SearchBox.is, SearchBox);

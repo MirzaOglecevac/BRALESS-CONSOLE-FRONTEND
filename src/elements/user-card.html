@@ -96,19 +96,19 @@
 
         <div id="userCard">
             <div>
-                <img src="../../images/profile.png" />
+                <img src$="{{entry.profile_image}}" />
             </div>
 
             <div>
-                <span id="name"> New user </span>
+                <span id="name"> {{entry.username}} </span>
             </div>
 
             <div>
-                <span id="email"> user@gmail.com </span>
+                <span id="email"> {{entry.email}} </span>
             </div>
 
             <div>
-                <span id="dateRegistered"> March 2018</span>
+                <span id="dateRegistered"> {{_formatDate(entry.date_of_registration)}} </span>
             </div>
 
             <div id="icons">
@@ -121,6 +121,45 @@
     <script>
         class UserCard extends Polymer.Element {
             static get is() { return 'user-card'; }
+
+            static get properties() {
+                return {
+                    entry: Object
+                };
+            }
+
+
+            ready(){
+                super.ready();
+            }
+
+
+            _formatDate(date){
+
+                if(!date){
+                    return "Date Unknown";
+                }
+                var year = date.substring(0,4);
+                var m = parseInt(date.substring(5,7));
+                var day = date.substring(8,10);
+                var month;
+                switch(m) {
+                    case 1: month = "Jan"; break;
+                    case 2: month = "Feb";break;
+                    case 3: month = "Mar";break;
+                    case 4: month = "Apr";break;
+                    case 5: month = "May"; break;
+                    case 6: month = "Jun"; break;
+                    case 7: month = "Jul"; break;
+                    case 8: month = "Aug"; break;
+                    case 9: month = "Sep"; break;
+                    case 10: month = "Oct"; break;
+                    case 11: month = "Nov"; break;
+                    case 12: month = "Dec"; break;
+                    default: month = "Unknown";
+                }
+                return day + " " + month + " " + year;
+            }
         }
 
         window.customElements.define(UserCard.is, UserCard);

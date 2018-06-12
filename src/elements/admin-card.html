@@ -96,7 +96,7 @@
 
         <div id="adminCard">
             <div>
-                <img src="../../images/profile.png" />
+                <img src$="{{entry.image}}" />
             </div>
 
             <div>
@@ -108,7 +108,7 @@
             </div>
 
             <div>
-                <span id="scope">Admin</span>
+                <span id="scope">{{entry.scope}}</span>
             </div>
 
             <div id="icons">
@@ -131,7 +131,7 @@
 
 
             ready(){
-                super.ready();console.log('Ready ' + this.entry);
+                super.ready();
             }
 
         }

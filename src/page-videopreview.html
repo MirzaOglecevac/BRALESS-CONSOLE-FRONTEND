@@ -1,9 +1,19 @@
 
-
+<!-- Import elements -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
+
+
+<!-- Scripts -->
+<script src="background/viewModels/videopreviewVM.js"></script>
+<script src="background/models/videopreviewModel.js"></script>
+<script src="background/core/configuration.js"></script>
+
 
 <dom-module id="page-videopreview">
   <template>
@@ -45,16 +55,11 @@
       }
 
 
-      embed {
+      iframe {
         height: 350px;
         max-width: 550px;
-        box-shadow: 3px 4px 2px rgba(150,150,150,0.5);
       }
 
-
-      embed:focus {
-        outline: none;
-      }
 
 
       table td {
@@ -119,6 +124,16 @@
 
     </style>
 
+    <!-- Router -->
+    <app-route
+            route="{{route}}"
+            pattern="/:id"
+            data="{{routeData}}">
+    </app-route>
+
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
     <div id="mainContainer">
 
@@ -131,8 +146,7 @@
         </p>
       </a>
 
-
-      <embed src="https://www.xvideos.com/embedframe/24736159">
+        <iframe src="{{videoData.video_url}}"></iframe>
 
       <br/>
 
@@ -140,56 +154,49 @@
           <tr>
             <td class="left"> Title: </td>
             <td>
-              <input id="title" class="inputElement" value="Test" disabled/>
+              <input id="title" class="inputElement" value="{{videoData.title}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> Video URL: </td>
             <td>
-              <input id="videourl" class="inputElement" disabled/>
+              <input id="videourl" class="inputElement" value="{{videoData.video_url}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> Video thumbnail: </td>
             <td>
-              <input id="videothumbnail" class="inputElement" disabled/>
+              <input id="videothumbnail" class="inputElement" value="{{videoData.thumbnail}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> Date created: </td>
             <td>
-              <input id="date" type="number" class="inputElement" disabled/>
+              <input id="date" class="inputElement" value="{{videoData.date}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> Duration: </td>
             <td>
-              <input id="duration" type="number" class="inputElement" disabled/>
+              <input id="duration" type="number" class="inputElement" value="{{videoData.duration}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> HD: </td>
             <td>
-              <input id="hd" class="inputElement" disabled/>
+              <input id="hd" class="inputElement" value="{{videoData.hd}}" disabled/>
             </td>
           </tr>
-
-          <!--<tr>-->
-            <!--<td class="left"> Pornstar: </td>-->
-            <!--<td>-->
-              <!--<input class="inputElement" />-->
-            <!--</td>-->
-          <!--</tr>-->
 
           <tr>
             <td class="left"> Tags: </td>
             <td>
-              <input id="tags" class="inputElement" disabled/>
+              <input id="tags" class="inputElement" value="{{videoData.tags.0.name}}" disabled/>
             </td>
           </tr>
 
@@ -211,13 +218,33 @@
   </template>
 
   <script>
-    class PageVideoPreview extends Polymer.Element {
+
+    class PageVideoPreview extends VideopreviewVM(Polymer.Element, VideopreviewModel, Configuration) {
       static get is() { return 'page-videopreview'; }
 
         static get properties() {
             return {
-
+                id: {
+                    type: String
+                },
+                videoData: {
+                    type: Array
+                }
             };
+        }
+
+
+        static get observers(){
+            return [
+                '_itemChanged()'
+            ]
+        }
+
+        _itemChanged(){
+            var href = location.href;
+            this.id = href.substring(href.lastIndexOf('/')+1);
+
+            this.getVideoData(this.$.ironAjax, this.id);
         }
 
       /* FUNCTIONS */
@@ -237,6 +264,7 @@
             this.$.tags.disabled = false;
 
             this.$.saveButton.style = "display: block";
+
         }
 
 
@@ -250,11 +278,25 @@
             this.$.duration.disabled = true;
             this.$.hd.disabled = true;
             this.$.tags.disabled = true;
+
+            var body = JSON.stringify({
+                "id": this.id,
+                "title": this.$.title.value,
+                "thumbnail": this.$.videothumbnail.value,
+                "video_url": this.$.videourl.value,
+                "date": this.$.date.value,
+                "length": this.$.duration.value,
+                "hd": this.$.hd.value,
+                "tags": this.$.tags.value
+            });
+
+            this.updateVideoData(this.$.ironAjax, body);
+
         }
 
 
         _deleteVideo(){
-
+            this.deleteVideoData(this.$.ironAjax, this.id);
         }
     }
 

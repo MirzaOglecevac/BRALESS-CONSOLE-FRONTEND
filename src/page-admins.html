@@ -49,7 +49,6 @@
       <p>Admins info</p>
 
       <div id="container">
-        <!-- Dom repeat -->
 
         <template id="adminList" is="dom-repeat" items="[[admins]]" as="admin">
           <admin-card entry="[[admin]]"></admin-card>
@@ -85,7 +84,6 @@
 
 
         _adminDataChanged(){
-            console.log(this.admins);
             this.$.adminList.render();
         }
     }

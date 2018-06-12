@@ -1,8 +1,19 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="elements/search-box.html">
 <link rel="import" href="elements/video-preview-box.html">
 <link rel="import" href="shared-styles.html">
+
+
+<!-- Scripts -->
+<script src="background/viewModels/videoVM.js"></script>
+<script src="background/models/videoModel.js"></script>
+<script src="background/core/configuration.js"></script>
+
+
 
 <dom-module id="page-videos">
   <template>
@@ -11,7 +22,7 @@
       #mainContainer {
         display: flex;
         flex-direction: column;
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
         min-width: 350px;
         font-family: "sans-serif", "Roboto";
@@ -39,7 +50,40 @@
         flex-wrap: wrap;
       }
 
+
+      #loadMoreContainer {
+        width: 100%;
+      }
+
+
+      #loadMore {
+        background-color: #B200B7;
+        color: #fff;
+        padding: 5px;
+        width: 120px;
+        position: relative;
+        left: 50%;
+        margin-left: -60px;
+        text-transform: none;
+        text-align: center;
+      }
+
+
+      #loadMoreSpinner {
+        height: 30px;
+        width: 30px;
+        position: relative;
+        left: 50%;
+        margin-left: -15px;
+        top: 10px;
+        display: none;
+      }
+
     </style>
+
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
 
     <div id="mainContainer">
@@ -53,22 +97,86 @@
       <br/><br/>
 
       <div id="videosContainer">
-        <!-- Dom repeat -->
-        <video-preview-box></video-preview-box>
-        <video-preview-box></video-preview-box>
-        <video-preview-box></video-preview-box>
-        <video-preview-box></video-preview-box>
+
+        <template is="dom-repeat" items="[[videos]]" as="video">
+          <video-preview-box entry="[[video]]"></video-preview-box>
+        </template>
 
       </div>
+
+      <div id="loadMoreContainer">
+        <paper-button id="loadMore" raised on-click="_loadMoreVideos">Load more</paper-button>
+        <paper-spinner id="loadMoreSpinner" active class="thin"></paper-spinner>
+      </div>
+
+      <br/>
+
+
     </div>
+
 
 
 
   </template>
 
   <script>
-    class PageVidoes extends Polymer.Element {
+    class PageVidoes extends VideoVM(Polymer.Element, VideoModel, Configuration) {
       static get is() { return 'page-videos'; }
+
+
+        static get properties() {
+            return {
+                videos: {
+                    type: Array,
+                    value: [],
+                    observer: '_dataChanged'
+                },
+                from: {
+                    type: Number,
+                    value: 0
+                },
+                limit: {
+                    type: Number,
+                    value: 20
+                },
+                searchValue: {
+                    type: String,
+                    value: ''
+                }
+            };
+        }
+
+
+        ready(){
+            super.ready();
+            this.getVideos(this.$.ironAjax, this.from, this.limit);
+
+            this._checkEvents();
+        }
+
+
+        _loadMoreVideos(){
+            this.$.loadMore.style="display: none";
+            this.$.loadMoreSpinner.style="display: block";
+            this.getVideos(this.$.ironAjax, this.from, this.limit);
+        }
+
+
+        _dataChanged(){
+            this.$.loadMore.style="display: block";
+            this.$.loadMoreSpinner.style="display: none";
+        }
+
+
+        _checkEvents(){
+            this.addEventListener('search-value', (e) => this._searchVideos(e));
+        }
+
+
+        _searchVideos(e){
+            this.searchValue = e.detail.value;
+            this.getSearchVideos(this.$.ironAjax, this.searchValue);
+        }
     }
 
     window.customElements.define(PageVidoes.is, PageVidoes);

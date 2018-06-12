@@ -1,8 +1,16 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="elements/search-box.html">
 <link rel="import" href="elements/user-card.html">
 <link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/userVM.js"></script>
+<script src="background/models/userModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-users">
   <template>
@@ -40,12 +48,43 @@
         box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
       }
 
+
+      #loadMoreContainer {
+        width: 100%;
+      }
+
+      #loadMore {
+        background-color: #B200B7;
+        color: #fff;
+        padding: 5px;
+        width: 120px;
+        position: relative;
+        left: 50%;
+        margin-left: -60px;
+        text-transform: none;
+        text-align: center;
+      }
+
+
+      #loadMoreSpinner {
+        height: 30px;
+        width: 30px;
+        position: relative;
+        left: 50%;
+        margin-left: -15px;
+        top: 10px;
+        display: none;
+      }
+
     </style>
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
 
     <div id="mainContainer">
 
-      <p>Pornstars</p>
+      <p>Users</p>
 
       <div id="searchBoxContainer">
         <search-box></search-box>
@@ -54,18 +93,67 @@
       <br/><br/>
 
       <div id="usersContainer">
-        <!-- Dom repeat -->
-        <user-card></user-card>
+        <template id="userList" is="dom-repeat" items="[[users]]" as="user">
+          <user-card entry="[[user]]"></user-card>
+        </template>
       </div>
 
+      <br/>
+
+      <div id="loadMoreContainer">
+        <paper-button id="loadMore" raised on-click="_loadMoreUsers">Load more</paper-button>
+        <paper-spinner id="loadMoreSpinner" active class="thin"></paper-spinner>
+      </div>
 
     </div>
 
   </template>
 
   <script>
-    class PageUsers extends Polymer.Element {
+    class PageUsers extends UserVM(Polymer.Element, UserModel, Configuration) {
       static get is() { return 'page-users'; }
+
+        static get properties(){
+            return {
+                users: {
+                    type: Array,
+                    value: []
+                },
+                from: {
+                    type: Number,
+                    value: 0
+                },
+                limit: {
+                    type: Number,
+                    value: 20
+                }
+            };
+        }
+
+
+        ready(){
+            super.ready();
+            this.getUsers(this.$.ironAjax, this.from, this.limit);
+
+            this._checkEvents();
+        }
+
+        _checkEvents(){
+            this.addEventListener('search-value', (e) => this._searchVideos(e));
+        }
+
+        _searchVideos(e){
+            this.searchValue = e.detail.value;
+            this.getSearchUsers(this.$.ironAjax, this.searchValue);
+        }
+
+
+        _loadMoreUsers(){
+            this.$.loadMore.style="display: none";
+            this.$.loadMoreSpinner.style="display: block";
+            this.getUsers(this.$.ironAjax, this.from, this.limit);
+        }
+
     }
 
     window.customElements.define(PageUsers.is, PageUsers);

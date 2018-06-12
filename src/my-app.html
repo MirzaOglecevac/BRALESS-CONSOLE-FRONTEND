@@ -35,9 +35,10 @@
 
 <!-- Models -->
 <script src="background/models/adminModel.js"></script>
+<script src="background/models/videoModel.js"></script>
 
 <!-- ViewModels -->
-<script src="background/viewModels/adminVM.js"></script>
+<script src="background/viewModels/videoVM.js"></script>
 
 
 <dom-module id="my-app">
@@ -123,12 +124,13 @@
         url-space-regex="^[[rootPath]]">
     </app-location>
 
-    <app-route
-        route="{{route}}"
-        pattern="[[rootPath]]:page"
-        data="{{routeData}}"
-        tail="{{subroute}}">
+    <app-route id="route"
+               route="{{route}}"
+               pattern="[[rootPath]]:page"
+               data="{{routeData}}"
+               tail="{{subroute}}">
     </app-route>
+
 
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->

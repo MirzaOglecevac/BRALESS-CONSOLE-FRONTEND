@@ -1,11 +1,19 @@
 
-
+<!-- Import elements -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="elements/pornstar-info-box.html">
 <link rel="import" href="elements/info-box.html">
 <link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/pornstarpreviewVM.js"></script>
+<script src="background/models/pornstarpreviewModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-pornstarpreview">
   <template>
@@ -101,6 +109,8 @@
         text-indent: 5px;
         box-sizing: border-box;
         overflow: auto;
+        font-size: 16px;
+        font-family: "sans-serif", "Roboto Mono";
       }
 
 
@@ -153,8 +163,68 @@
         display: none;
       }
 
+
+
+      .mainContainerInfo {
+        width: 250px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: #B200B7;
+        display: flex;
+        flex-direction: row;
+        margin: 0 15px 15px 0;
+      }
+
+
+      .text {
+        color: #eee;
+        font-size: 20px;
+        padding: 10px;
+        width: 70%;
+      }
+
+
+      .number {
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 10px;
+        width: 30%;
+        text-align: right;
+      }
+
+
+      .number > .numberBottom {
+        position: relative;
+        top: 50px;
+      }
+
+
+      #infoBox img {
+        width: 40px;
+        height: 40px;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        border-radius: 50%;
+      }
+
+      #infoBox span {
+        position: relative;
+        bottom: 14px;
+      }
+
     </style>
 
+
+    <!-- Router -->
+    <app-route
+            route="{{route}}"
+            pattern="/:id"
+            data="{{routeData}}">
+    </app-route>
+
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
 
     <img id="hiddenImage" src=""/>
@@ -173,16 +243,48 @@
 
       <br/>
 
-      <pornstar-info-box></pornstar-info-box>
+      <!-- <pornstar-info-box></pornstar-info-box> -->
+      <div id="infoBox">
+        <img src$="{{pornstarData.profile_image}}">
+        <span> {{pornstarData.name}} </span>
+      </div>
 
 
       <br/>
 
       <div id="infoSection">
-        <info-box></info-box>
-        <info-box></info-box>
-        <info-box></info-box>
-        <info-box></info-box>
+
+        <div class="mainContainerInfo">
+          <div class="text">
+            Videos
+          </div>
+
+          <div class="number">
+            <span class="numberBottom"> {{pornstarData.num_of_videos}} </span>
+          </div>
+        </div>
+
+        <div class="mainContainerInfo">
+          <div class="text">
+            Profile views
+          </div>
+
+          <div class="number">
+            <span class="numberBottom"> {{pornstarData.profile_views}} </span>
+          </div>
+        </div>
+
+        <div class="mainContainerInfo">
+          <div class="text">
+            Subscribers
+          </div>
+
+          <div class="number">
+            <span class="numberBottom"> {{pornstarData.subscribers}} </span>
+          </div>
+        </div>
+
+
       </div>
 
       <br/>
@@ -193,49 +295,49 @@
         <tr>
           <td class="left"> Name: </td>
           <td>
-            <input id="name" class="inputElement" value="Test" disabled/>
+            <input id="name" class="inputElement" value="{{pornstarData.name}}" disabled/>
           </td>
         </tr>
 
         <tr>
           <td class="left"> Gender: </td>
           <td>
-            <input id="gender" class="inputElement"  disabled/>
+            <input id="gender" class="inputElement"  value="{{pornstarData.sex}}" disabled/>
           </td>
         </tr>
 
         <tr>
           <td class="left"> Age: </td>
           <td>
-            <input id="age" type="number" class="inputElement"  disabled/>
+            <input id="age" type="number" class="inputElement"  value="{{pornstarData.age}}" disabled/>
           </td>
         </tr>
 
         <tr>
           <td class="left"> Country: </td>
           <td>
-            <input id="country" class="inputElement"  disabled/>
+            <input id="country" class="inputElement" value="{{pornstarData.country}}" disabled/>
           </td>
         </tr>
 
         <tr>
           <td id="aboutText" class="left"> About me: </td>
           <td>
-            <textarea id="about"  disabled></textarea>
+            <textarea id="about" value="{{pornstarData.about}}" disabled></textarea>
           </td>
         </tr>
 
         <tr>
           <td class="left image"> Profile image: </td>
           <td>
-            <input id="profileImage" class="inputElement image"  on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="https://img-hw.xvideos.com/videos/profiles/profthumb/f7/64/fa/sara-jay/profile_1_big.jpg"  disabled/>
+            <input id="profileImage" class="inputElement image"  on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.profile_image}}"  disabled/>
           </td>
         </tr>
 
         <tr>
           <td class="left"> Banner image: </td>
           <td>
-            <input id="bannerImage" class="inputElement image" on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="https://img-hw.xvideos.com/videos/profiles/banners/f7/64/fa/sara-jay/banner_2_big.jpg"  disabled/>
+            <input id="bannerImage" class="inputElement image" on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.banner_image}}"  disabled/>
           </td>
         </tr>
 
@@ -258,13 +360,32 @@
   </template>
 
   <script>
-    class PagePornstarPreview extends Polymer.Element {
+    class PagePornstarPreview extends PornstarpreviewVM(Polymer.Element, PornstarpreviewModel, Configuration) {
       static get is() { return 'page-pornstarpreview'; }
 
         static get properties() {
             return {
-
+                id: {
+                    type: String
+                },
+                pornstarData: {
+                    type: Array
+                }
             };
+        }
+
+
+        static get observers(){
+            return [
+                '_itemChanged()'
+            ]
+        }
+
+        _itemChanged(){
+            var href = location.href;
+            this.id = href.substring(href.lastIndexOf('/')+1);
+
+            this.getPornstarData(this.$.ironAjax, this.id);
         }
 
       /* FUNCTIONS */

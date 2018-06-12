@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
+
 <dom-module id="video-preview-box">
     <template>
         <style include="shared-styles">
@@ -65,22 +66,22 @@
         </style>
 
 
-        <div id="mainContainer">
+        <div id="mainContainer" on-click="_redirectToVideoPreviewPage">
             <div id="videoThumbnail">
-                <img src="https://img-egc.xvideos-cdn.com/videos/thumbslll/88/35/7e/88357e4cd16980e1acd73c31a7ce40fd/88357e4cd16980e1acd73c31a7ce40fd.3.jpg" />
+                <img src$="{{entry.thumbnail}}" />
             </div>
             <div id="info">
-                <p> Video Title</p>
+                <p> {{_checkTitle(entry.title)}} </p>
                 <div id="videoData">
                     <span id="views">
-                        124k views
+                        {{_calculateNumbers(entry.views)}} views
                     </span>
 
                     <span id="likesAndDislikes">
-                        <span id="likes"> 50k
+                        <span id="likes"> {{_calculateNumbers(entry.likes)}}
                             <iron-icon icon="thumb-up"></iron-icon>
                         </span>
-                        <span id="dislikes"> 10k
+                        <span id="dislikes"> {{_calculateNumbers(entry.dislikes)}}
                             <iron-icon icon="thumb-down"></iron-icon>
                         </span>
                     </span>
@@ -88,11 +89,64 @@
             </div>
         </div>
 
+
+
     </template>
 
     <script>
         class VideoPreviewBox extends Polymer.Element {
             static get is() { return 'video-preview-box'; }
+
+            static get properties() {
+                return {
+
+                    entry: {
+                        type: Object
+                    }
+                };
+            }
+
+
+            ready(){
+                super.ready();
+            }
+
+
+
+
+            _checkTitle(title){
+
+                if(title.length > 25){
+                    title = title.substring(0,25) + '...';
+                }
+
+                return title;
+            }
+
+
+
+            _calculateNumbers(num){
+
+                if (num >= 1000000000) {
+                    return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+                }
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+                }
+                if(num < 1000){
+                    return num;
+                }
+            }
+
+
+            _redirectToVideoPreviewPage(){
+
+                location.href = "/videopreview/" + this.entry.id;
+            }
+
         }
 
         window.customElements.define(VideoPreviewBox.is, VideoPreviewBox);

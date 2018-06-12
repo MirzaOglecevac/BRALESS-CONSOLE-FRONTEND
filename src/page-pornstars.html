@@ -1,8 +1,16 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="elements/search-box.html">
 <link rel="import" href="elements/pornstar-card.html">
 <link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/pornstarVM.js"></script>
+<script src="background/models/pornstarModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-pornstars">
   <template>
@@ -42,8 +50,39 @@
       }
 
 
+      #loadMoreContainer {
+        width: 100%;
+      }
+
+
+      #loadMore {
+        background-color: #B200B7;
+        color: #fff;
+        padding: 5px;
+        width: 120px;
+        position: relative;
+        left: 50%;
+        margin-left: -60px;
+        text-transform: none;
+        text-align: center;
+      }
+
+
+      #loadMoreSpinner {
+        height: 30px;
+        width: 30px;
+        position: relative;
+        left: 50%;
+        margin-left: -15px;
+        top: 10px;
+        display: none;
+      }
+
+
     </style>
 
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
     <div id="mainContainer">
 
@@ -56,10 +95,21 @@
       <br/><br/>
 
       <div id="pornstarsContainer">
-        <!-- Dom repeat -->
-        <pornstar-card></pornstar-card>
+
+        <template is="dom-repeat" items="[[pornstars]]" as="pornstar">
+          <pornstar-card entry="[[pornstar]]"></pornstar-card>
+        </template>
+
       </div>
 
+      <br/>
+
+      <div id="loadMoreContainer">
+        <paper-button id="loadMore" raised on-click="_loadMorePornstars">Load more</paper-button>
+        <paper-spinner id="loadMoreSpinner" active class="thin"></paper-spinner>
+      </div>
+
+      <br/>
 
     </div>
 
@@ -67,8 +117,63 @@
   </template>
 
   <script>
-    class PagePornstars extends Polymer.Element {
+    class PagePornstars extends PornstarVM(Polymer.Element, PornstarModel, Configuration) {
       static get is() { return 'page-pornstars'; }
+
+
+        static get properties() {
+            return {
+                pornstars: {
+                    type: Array,
+                    value: [],
+                    observer: '_dataChanged'
+                },
+                from: {
+                    type: Number,
+                    value: 0
+                },
+                limit: {
+                    type: Number,
+                    value: 20
+                },
+                searchValue: {
+                    type: String,
+                    value: ''
+                }
+            };
+        }
+
+
+        ready(){
+            super.ready();
+            this.getPornstars(this.$.ironAjax, this.from, this.limit);
+
+            this._checkEvents();
+        }
+
+
+        _loadMorePornstars(){
+            this.$.loadMore.style="display: none";
+            this.$.loadMoreSpinner.style="display: block";
+            this.getPornstars(this.$.ironAjax, this.from, this.limit);
+        }
+
+
+        _dataChanged(){
+            this.$.loadMore.style="display: block";
+            this.$.loadMoreSpinner.style="display: none";
+        }
+
+
+        _checkEvents(){
+            this.addEventListener('search-value', (e) => this._searchVideos(e));
+        }
+
+
+        _searchVideos(e){
+            this.searchValue = e.detail.value;
+            this.getSearchPornstars(this.$.ironAjax, this.searchValue);
+        }
     }
 
     window.customElements.define(PagePornstars.is, PagePornstars);
