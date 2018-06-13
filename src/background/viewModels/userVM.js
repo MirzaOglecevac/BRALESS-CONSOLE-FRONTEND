@@ -30,6 +30,18 @@ UserVM = function(superClass,UserModel,Configuration) {
         }
 
 
+        deleteUser(ironRequest, id) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/user/remove?id=' + id;
+            var request = 'user-delete';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            UserModel.requestIron(url,endpoint,request,coreAjax,this);
+            UserModel.deleteUser();
+        }
+
+
         ready(){
             super.ready();
             this.addEventListener('request-response', (e) => this._requestResponse(e));
@@ -41,6 +53,8 @@ UserVM = function(superClass,UserModel,Configuration) {
                 var data = this.users;
                 this.users = data.concat(e.detail.response.data);
                 this.from += 20;
+                this.$.loaderContainer.style="display: none";
+                this.$.usersContainer.style="display: block";
 
                 if(e.detail.response.data.length < 20){
                     this.$.loadMore.style="display: none";
@@ -49,6 +63,13 @@ UserVM = function(superClass,UserModel,Configuration) {
                 this.users = [];
                 this.users = e.detail.response.data;
                 this.$.loadMore.style="display: none";
+                this.$.backToMain.style = "display: block;";
+                this.$.loaderContainer.style="display: none";
+                this.$.usersContainer.style="display: block";
+
+            }else if(e.detail.kind == 'user-delete'){
+
+                console.log("user deleted");
             }
 
 

@@ -17,8 +17,16 @@ AdminVM = function(superClass,AdminModel,Configuration) {
             AdminModel.getAdmins();
         }
 
-        _onAdminModelChange() {
 
+        deleteAdmin(ironRequest, id) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/admin/remove?id=' + id;
+            var request = 'admin-delete';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            AdminModel.requestIron(url,endpoint,request,coreAjax,this);
+            AdminModel.deleteAdmin();
         }
 
         ready(){
@@ -28,10 +36,12 @@ AdminVM = function(superClass,AdminModel,Configuration) {
 
         _requestResponse(e) {
 
-            this.admins = e.detail.response.data;
 
-            return;
-
+            if(e.detail.kind == "admin"){
+                this.admins = e.detail.response.data;
+            }else if(e.detail.kind == "admin-delete"){
+                console.log("admin deleted");
+            }
         }
     }
 

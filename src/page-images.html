@@ -1,8 +1,16 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="elements/image-box.html">
 <link rel="import" href="elements/search-box.html">
 <link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/imageVM.js"></script>
+<script src="background/models/imageModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-images">
   <template>
@@ -16,6 +24,7 @@
         min-width: 350px;
         font-family: "sans-serif", "Roboto";
       }
+
 
       #mainContainer > p {
         text-transform: uppercase;
@@ -39,7 +48,78 @@
         flex-wrap: wrap;
       }
 
+
+      /* Button container */
+
+
+      #loadMoreContainer {
+        width: 100%;
+      }
+
+
+      #loadMore {
+        background-color: #B200B7;
+        color: #fff;
+        padding: 5px;
+        width: 120px;
+        position: relative;
+        left: 50%;
+        margin-left: -60px;
+        text-transform: none;
+        text-align: center;
+      }
+
+
+      #loadMoreSpinner {
+        height: 30px;
+        width: 30px;
+        position: relative;
+        left: 50%;
+        margin-left: -15px;
+        top: 10px;
+        display: none;
+      }
+
+
+      /* Back to main part */
+
+      #backToMain {
+        cursor: pointer;
+        display: none;
+        position: relative;
+        bottom: 20px;
+      }
+
+
+      iron-icon {
+        --iron-icon-fill-color: #333;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        cursor: pointer;
+      }
+
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 30vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
+
     </style>
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
 
     <div id="mainContainer">
@@ -52,21 +132,105 @@
 
       <br/><br/>
 
-      <div id="imagesContainer">
-        <!-- Dom repeat -->
-        <image-box></image-box>
-        <image-box></image-box>
-        <image-box></image-box>
-        <image-box></image-box>
+      <p id="backToMain" on-click="_getBackFromSearch">
+        <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
+        Return from search results
+      </p>
+
+
+      <div id="loaderContainer">
+        <paper-spinner id="loader" active class="thin"></paper-spinner>
       </div>
+
+      <div id="imagesContainer">
+
+        <template is="dom-repeat" items="[[images]]" as="image">
+          <image-box entry="[[image]]"></image-box>
+        </template>
+
+        <div id="loadMoreContainer">
+          <paper-button id="loadMore" raised on-click="_loadMoreImages">Load more</paper-button>
+          <paper-spinner id="loadMoreSpinner" active class="thin"></paper-spinner>
+        </div>
+
+        <br/><br/>
+
     </div>
 
 
   </template>
 
   <script>
-    class PageImages extends Polymer.Element {
+    class PageImages extends ImageVM(Polymer.Element, ImageModel, Configuration) {
       static get is() { return 'page-images'; }
+
+        static get properties() {
+            return {
+                images: {
+                    type: Array,
+                    value: [],
+                    observer: '_dataChanged'
+                },
+                from: {
+                    type: Number,
+                    value: 0
+                },
+                limit: {
+                    type: Number,
+                    value: 2
+                },
+                searchValue: {
+                    type: String,
+                    value: ''
+                }
+            };
+        }
+
+
+        ready(){
+            super.ready();
+            this.getImages(this.$.ironAjax, this.from, this.limit);
+
+            this.$.imagesContainer.style="display: none";
+            this.$.loadMore.style="display: none";
+
+            this._checkEvents();
+        }
+
+
+        _loadMoreImages(){
+            this.$.loadMore.style="display: none";
+            this.$.loadMoreSpinner.style="display: block";
+            this.getImages(this.$.ironAjax, this.from, this.limit);
+        }
+
+
+        _dataChanged(){
+            this.$.loadMore.style="display: block";
+            this.$.loadMoreSpinner.style="display: none";
+        }
+
+
+        _checkEvents(){
+            this.addEventListener('search-value', (e) => this._searchVideos(e));
+        }
+
+
+        _searchVideos(e){
+            this.searchValue = e.detail.value;
+            this.getSearchImages(this.$.ironAjax, this.searchValue);
+        }
+
+        _getBackFromSearch(){
+            this.from = 0;
+            this.limit = 2;
+            this.images = [];
+            this.getImages(this.$.ironAjax, this.from, this.limit);
+            this.$.backToMain.style = "display: none;";
+            this.$.imagesContainer.style="display: none";
+            this.$.loaderContainer.style="display: block";
+            this.$.loadMore.style="display: block";
+        }
     }
 
     window.customElements.define(PageImages.is, PageImages);

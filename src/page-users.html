@@ -76,6 +76,44 @@
         display: none;
       }
 
+
+      /* Back to main part */
+
+      #backToMain {
+        cursor: pointer;
+        display: none;
+        position: relative;
+        bottom: 20px;
+      }
+
+
+      iron-icon {
+        --iron-icon-fill-color: #333;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        cursor: pointer;
+      }
+
+
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 30vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
+
+
     </style>
 
     <!-- HTTP Request -->
@@ -91,6 +129,18 @@
       </div>
 
       <br/><br/>
+
+      <p id="backToMain" on-click="_getBackFromSearch">
+        <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
+        Return from search results
+      </p>
+
+
+
+      <div id="loaderContainer">
+        <paper-spinner id="loader" active class="thin"></paper-spinner>
+      </div>
+
 
       <div id="usersContainer">
         <template id="userList" is="dom-repeat" items="[[users]]" as="user">
@@ -135,12 +185,18 @@
             super.ready();
             this.getUsers(this.$.ironAjax, this.from, this.limit);
 
+            this.$.usersContainer.style="display: none";
+            this.$.loadMore.style="display: none";
+
             this._checkEvents();
         }
 
+
         _checkEvents(){
             this.addEventListener('search-value', (e) => this._searchVideos(e));
+            this.addEventListener('delete-user', (e) => this._delete(e));
         }
+
 
         _searchVideos(e){
             this.searchValue = e.detail.value;
@@ -152,6 +208,23 @@
             this.$.loadMore.style="display: none";
             this.$.loadMoreSpinner.style="display: block";
             this.getUsers(this.$.ironAjax, this.from, this.limit);
+        }
+
+
+        _getBackFromSearch(){
+            this.from = 0;
+            this.limit = 20;
+            this.videos = [];
+            this.getUsers(this.$.ironAjax, this.from, this.limit);
+            this.$.backToMain.style = "display: none;";
+            this.$.usersContainer.style="display: none";
+            this.$.loaderContainer.style="display: block";
+            this.$.loadMore.style="display: block";
+        }
+
+
+        _delete(e){
+            this.deleteUser(this.$.ironAjax, e.detail.id);
         }
 
     }

@@ -2,6 +2,7 @@
 <!-- Import elements -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
@@ -57,7 +58,8 @@
 
       iframe {
         height: 350px;
-        max-width: 550px;
+        width: 100%;
+        //max-width: 550px;
       }
 
 
@@ -82,7 +84,8 @@
         font-family: "sans-serif", "Roboto Mono";
         font-size: 15px;
         color: #333;
-        width: 200px;
+        min-width: 150px;
+        width: 50%;
         border-radius: 5px;
         text-indent: 5px;
       }
@@ -122,6 +125,42 @@
         right: 10px;
       }
 
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 35vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
+
+      /* Comments */
+
+      #commentsContainer {
+
+        width: 100%;
+      }
+
+      #commentButton {
+        background-color: #B200B7;
+        color: #fff;
+        text-align: center;
+        width: 200px;
+        position: relative;
+        left: 50%;
+        margin-left: -100px;
+      }
+
+
     </style>
 
     <!-- Router -->
@@ -134,6 +173,14 @@
 
     <!-- HTTP Request -->
     <iron-ajax id="ironAjax"></iron-ajax>
+
+
+
+    <div id="loaderContainer">
+      <paper-spinner id="loader" active class="thin"></paper-spinner>
+    </div>
+
+
 
     <div id="mainContainer">
 
@@ -213,6 +260,13 @@
 
         <br/>
 
+
+      <div id="commentsContainer">
+        <paper-button id="commentButton" raised on-click="_getComments">Load video comments</paper-button>
+      </div>
+
+      <br/>
+
     </div>
 
   </template>
@@ -243,6 +297,8 @@
         _itemChanged(){
             var href = location.href;
             this.id = href.substring(href.lastIndexOf('/')+1);
+
+            this.$.mainContainer.style="display: none";
 
             this.getVideoData(this.$.ironAjax, this.id);
         }
@@ -297,6 +353,11 @@
 
         _deleteVideo(){
             this.deleteVideoData(this.$.ironAjax, this.id);
+        }
+
+        _getComments(){
+            this.getVideoComments(this.$.ironAjax, this.id);
+
         }
     }
 

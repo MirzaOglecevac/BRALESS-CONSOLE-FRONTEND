@@ -1,7 +1,15 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="elements/info-box.html">
 <link rel="import" href="shared-styles.html">
+
+
+<!-- Scripts -->
+<script src="background/viewModels/statisticVM.js"></script>
+<script src="background/models/statisticModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-statistic">
   <template>
@@ -16,6 +24,7 @@
         font-family: "sans-serif", "Roboto";
       }
 
+
       #mainContainer > p {
         text-transform: uppercase;
         color: #333;
@@ -24,26 +33,152 @@
 
 
       #statisticContainer {
+        width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: row !important;
         flex-wrap: wrap;
         justify-content: center;
       }
 
 
+      .mainContainerInfo {
+        width: 250px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: #B200B7;
+        display: flex;
+        flex-direction: row;
+        margin: 0 15px 15px 0;
+      }
+
+
+      .text {
+        color: #eee;
+        font-size: 20px;
+        padding: 10px;
+        width: 50%;
+      }
+
+
+      .number {
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 10px;
+        width: 50%;
+        direction: rtl;
+      }
+
+
+      .number > .numberBottom {
+        position: relative;
+        top: 50px;
+      }
+
+
+      #infoBox img {
+        width: 40px;
+        height: 40px;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        border-radius: 50%;
+      }
+
+
+      #infoBox span {
+        position: relative;
+        bottom: 14px;
+      }
+
+
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 30vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
+
     </style>
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
+
 
     <div id="mainContainer">
 
       <p>Statistics</p>
 
+      <div id="loaderContainer">
+        <paper-spinner id="loader" active class="thin"></paper-spinner>
+      </div>
+
       <div id="statisticContainer">
 
-        <!-- Dom repeat -->
-        <info-box></info-box>
-        <info-box></info-box>
-        <info-box></info-box>
-        <info-box></info-box>
+        <div id="infoSection">
+
+          <div class="mainContainerInfo">
+            <div class="text">
+              Videos
+            </div>
+
+            <div class="number">
+              <span class="numberBottom"> {{statistic.number_of_videos}} </span>
+            </div>
+          </div>
+
+          <div class="mainContainerInfo">
+            <div class="text">
+              Images
+            </div>
+
+            <div class="number">
+              <span class="numberBottom"> {{statistic.number_of_images}} </span>
+            </div>
+          </div>
+
+          <div class="mainContainerInfo">
+            <div class="text">
+              Pornstars
+            </div>
+
+            <div class="number">
+              <span class="numberBottom"> {{statistic.number_of_pornstars}} </span>
+            </div>
+          </div>
+
+          <div class="mainContainerInfo">
+            <div class="text">
+              Users
+            </div>
+
+            <div class="number">
+              <span class="numberBottom"> {{statistic.number_of_users}} </span>
+            </div>
+          </div>
+
+
+          <div class="mainContainerInfo">
+            <div class="text">
+              Ads
+            </div>
+
+            <div class="number">
+              <span class="numberBottom"> {{statistic.number_of_ads}} </span>
+            </div>
+          </div>
+
+
+        </div>
 
       </div>
 
@@ -54,8 +189,24 @@
   </template>
 
   <script>
-    class PageStatistic extends Polymer.Element {
+    class PageStatistic extends StatisticVM(Polymer.Element, StatisticModel, Configuration) {
       static get is() { return 'page-statistic'; }
+
+      static get properties(){
+          return {
+              statistic: {
+                  type: Array,
+                  value: []
+              }
+          };
+      }
+
+      ready(){
+          super.ready();
+          this.getStatistic(this.$.ironAjax);
+
+          this.$.statisticContainer.style="display: none";
+      }
     }
 
     window.customElements.define(PageStatistic.is, PageStatistic);

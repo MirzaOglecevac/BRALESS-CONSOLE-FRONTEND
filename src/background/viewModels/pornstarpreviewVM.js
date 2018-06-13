@@ -35,7 +35,7 @@ PornstarpreviewVM = function(superClass, PornstarpreviewModel, Configuration) {
             var endpoint = '/pornstar/edit';
             var request = 'pornstar-update';
             var coreAjax = ironRequest;
-
+            console.log(body);
             // setup iron request
             PornstarpreviewModel.requestIron(url,endpoint,request,coreAjax,this);
             PornstarpreviewModel.updatePornstarData(body);

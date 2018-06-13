@@ -45,7 +45,7 @@
 
 
         <div id="container">
-            <input id="input" type="text" value="{{searchValue}}"/>
+            <input id="input" type="text" value="{{searchValue}}" on-keydown="_ifEnter"/>
             <div id="searchIcon" on-click="_search">
                 <iron-icon icon="search"></iron-icon>
             </div>
@@ -77,6 +77,13 @@
                         value: search
                     }
                 }));
+            }
+
+
+            _ifEnter(event){
+                if(event.keyCode === 13){
+                    this._search();
+                }
             }
 
         }

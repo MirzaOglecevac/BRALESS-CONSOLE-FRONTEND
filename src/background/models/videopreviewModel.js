@@ -21,11 +21,19 @@ var VideopreviewModel = (function(){
             requestHandler.getRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp);
         };
 
+        this.getVideoComments = function(){
+            requestHandler.getRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp);
+        };
+
         this.updateVideoData = function(body){
             requestHandler.putRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
         };
 
         this.deleteVideo = function(){
+            requestHandler.deleteRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp);
+        };
+
+        this.deleteComment = function(){
             requestHandler.deleteRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp);
         };
 

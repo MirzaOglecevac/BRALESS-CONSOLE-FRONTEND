@@ -18,6 +18,18 @@ VideopreviewVM = function(superClass, VideopreviewModel, Configuration) {
         }
 
 
+        getVideoComments(ironRequest, id) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = "";
+            var request = 'video-comments';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            VideopreviewModel.requestIron(url,endpoint,request,coreAjax,this);
+            VideopreviewModel.getVideoComments();
+        }
+
+
         deleteVideoData(ironRequest, id) {
             var url = Configuration.configuration()[0].baseUrl;
             var endpoint = '/video/remove?id=' + id;
@@ -27,6 +39,18 @@ VideopreviewVM = function(superClass, VideopreviewModel, Configuration) {
             // setup iron request
             VideopreviewModel.requestIron(url,endpoint,request,coreAjax,this);
             VideopreviewModel.deleteVideo();
+        }
+
+
+        deleteComment(ironRequest, id) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = "/video/comment?id=" + id;
+            var request = 'video-comment-delete';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            VideopreviewModel.requestIron(url,endpoint,request,coreAjax,this);
+            VideopreviewModel.deleteComment();
         }
 
 
@@ -53,11 +77,17 @@ VideopreviewVM = function(superClass, VideopreviewModel, Configuration) {
             if(e.detail.kind == 'video-preview'){
                 console.log(e.detail.response.data[0]);
                 this.videoData = e.detail.response.data[0];
+                this.$.loaderContainer.style="display: none";
+                this.$.mainContainer.style="display: flex";
             }else if(e.detail.kind == 'video-delete'){
                 console.log(e.detail);
                 //location.href = '/videos';
             }else if(e.detail.kind == 'video-update'){
                 console.log('data updated');
+            }else if(e.detail.kind == 'video-comments'){
+                console.log(e.detail.response);
+            }else if(e.detail.kind == 'video-comment-delete'){
+                console.log(e.detail.response);
             }
 
 

@@ -15,7 +15,8 @@
                 margin: 0;
                 padding: 0;
                 font-family: "sans-serif", "Roboto";
-                cursor: pointer;
+                padding: 9px 5px 0 5px;
+                border-bottom: 1px solid rgba(100,100,100, 0.4);
             }
 
 
@@ -25,11 +26,11 @@
 
 
             #adminCard img {
-                width: 30px;
-                height: 30px;
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 display: inline-block;
-                padding: 5px;
+                border: 2px solid rgba(80,80,80,0.5);
             }
 
 
@@ -37,7 +38,7 @@
                 display: inline-block;
                 box-sizing: border-box;
                 text-align: center;
-                height: 40px;
+                height: 52px;
             }
 
 
@@ -96,7 +97,7 @@
 
         <div id="adminCard">
             <div>
-                <img src$="{{entry.image}}" />
+                <img src$="{{_checkImage(entry.image)}}" />
             </div>
 
             <div>
@@ -113,7 +114,7 @@
 
             <div id="icons">
                 <iron-icon icon="create"></iron-icon>
-                <iron-icon icon="delete"></iron-icon>
+                <iron-icon icon="delete" on-click="_deleteAdmin"></iron-icon>
             </div>
         </div>
 
@@ -132,6 +133,25 @@
 
             ready(){
                 super.ready();
+            }
+
+
+            _checkImage(image){
+                if(image){
+                    return image;
+                }else {
+                    return '../../images/pornstar_placeholder.jpg';
+                }
+            }
+
+
+            _deleteAdmin(){
+
+                this.dispatchEvent(new CustomEvent('delete-admin', {
+                    bubbles: true, composed: true, detail: {
+                        id: this.entry.id
+                    }
+                }));
             }
 
         }

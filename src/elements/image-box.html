@@ -12,6 +12,7 @@
                 height: 260px;
                 margin: 0 15px 15px 0;
                 box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+                cursor: pointer;
             }
 
 
@@ -78,14 +79,14 @@
             <div id="imageCard">
 
                 <div id="tools">
-                    <p>Image Title</p>
+                    <p> {{_checkTitle(entry.title)}} </p>
                     <div>
-                        <iron-icon icon="create"></iron-icon>
-                        <iron-icon icon="delete"></iron-icon>
+                        <!--  <iron-icon icon="create"></iron-icon>
+                        <iron-icon icon="delete"></iron-icon> -->
                     </div>
                 </div>
 
-                <img src="https://r.hswstatic.com/w_907/gif/tesla-cat.jpg" />
+                <img src$="{{entry.image_link}}" />
 
             </div>
         </div>
@@ -96,6 +97,22 @@
     <script>
         class ImageBox extends Polymer.Element {
             static get is() { return 'image-box'; }
+
+            static get properties(){
+                return {
+                    entry: Object
+                }
+            }
+
+            _checkTitle(title){
+
+                if(title.length > 30){
+                    title = title.substring(0,30) + '...';
+                }
+
+                return title;
+            }
+
         }
 
         window.customElements.define(ImageBox.is, ImageBox);

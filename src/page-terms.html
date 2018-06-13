@@ -1,8 +1,14 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/termVM.js"></script>
+<script src="background/models/termModel.js"></script>
+<script src="background/core/configuration.js"></script>
 
 <dom-module id="page-terms">
   <template>
@@ -67,13 +73,39 @@
       }
 
 
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 30vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
+
     </style>
 
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
     <div id="mainContainer">
 
       <p>Terms and conditions</p>
-      
+
+
+      <div id="loaderContainer">
+        <paper-spinner id="loader" active class="thin"></paper-spinner>
+      </div>
+
+
       <div id="textContainer">
         <paper-textarea id="textForEdit" value="{{terms}}"></paper-textarea>
       </div>
@@ -91,18 +123,15 @@
   </template>
 
   <script>
-    class PageTerms extends Polymer.Element {
+    class PageTerms extends TermVM(Polymer.Element, TermModel, Configuration) {
       static get is() { return 'page-terms'; }
 
         static get properties() {
             return {
-                demo: {
-                    type: String,
-                    value: 'demo'
-                },
+
                 terms: {
                     type: String,
-                    value: "Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili,Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili.Ljetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantiliLjetne Plusminus kolekcije radim isključivo od prirodnih materijala, jer koža u ljetnom periodu mnogo bolje reaguje na lagane ljetne materijale poput pamuka. Ipak, neki modeli ponekad zahtijevaju i druge sastave materijala kao što su naprimjer bile naše invert suknje i mantili."
+                    value: ""
                 }
             };
         }
@@ -113,7 +142,12 @@
       ready(){
           super.ready();
           this.$.textForEdit.disabled = true;
-      }
+          this.getTerms(this.$.ironAjax);
+
+            this.$.textContainer.style="display: none";
+            this.$.buttonContainer.style="display: none";
+
+        }
 
 
       _editTerms(){
@@ -125,6 +159,13 @@
       _saveTerms(){
           this.$.saveButton.style = "display: none;";
           this.$.textForEdit.disabled = true;
+
+            var body = JSON.stringify({
+                "id": 1,
+                "content": this.$.textForEdit.value
+            });
+
+          this.updateTerms(this.$.ironAjax, body);
       }
 
     }

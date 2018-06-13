@@ -105,7 +105,7 @@
         background-color: #fff;
         box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
         resize: none;
-        padding: 5px;
+        padding: 5px 5px 5px 10px;
         text-indent: 5px;
         box-sizing: border-box;
         overflow: auto;
@@ -154,10 +154,10 @@
       #hiddenImage {
         position: fixed;
         z-index: 1000;
-        right: 47vh;
-        bottom: 24vh;
+        right: 10vh;
+        bottom: 27vh;
         width: 250px;
-        height: 200px;
+        height: 180px;
         border: 5px solid #B200B7;
         border-radius: 5px;
         display: none;
@@ -180,7 +180,7 @@
         color: #eee;
         font-size: 20px;
         padding: 10px;
-        width: 70%;
+        width: 50%;
       }
 
 
@@ -189,8 +189,8 @@
         font-weight: bold;
         font-size: 20px;
         padding: 10px;
-        width: 30%;
-        text-align: right;
+        width: 50%;
+        direction: rtl;
       }
 
 
@@ -201,15 +201,17 @@
 
 
       #infoBox img {
-        width: 40px;
-        height: 40px;
+        width: 70px;
+        height: 70px;
         box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
         border-radius: 50%;
+        border: 2px solid rgba(100,100,100,0.5);
       }
+
 
       #infoBox span {
         position: relative;
-        bottom: 14px;
+        bottom: 33px;
       }
 
     </style>
@@ -396,8 +398,11 @@
 
 
         _getImageUrl(event){
-            this.$.hiddenImage.src=event.path[0].defaultValue;
-            this.$.hiddenImage.style="display: block";
+            if(event.path[0].value.length > 20){
+                this.$.hiddenImage.src=event.path[0].value;
+                this.$.hiddenImage.style="display: block";
+            }
+
         }
 
 
@@ -428,11 +433,23 @@
             this.$.about.disabled = true;
             this.$.profileImage.disabled = true;
             this.$.bannerImage.disabled = true;
+
+            var body = JSON.stringify({
+                "name": this.$.name.value,
+                "age": this.$.age.value,
+                "sex": this.$.gender.value,
+                "country": this.$.country.value,
+                "about": this.$.about.value,
+                "profile_image": this.$.profileImage.value,
+                "banner_image": this.$.bannerImage.value
+            });
+
+            this.updatePornstarData(this.$.ironAjax, body);
         }
 
 
         _deletePornstar(){
-
+            this.deletePornstarData(this.$.ironAjax, this.id);
         }
     }
 

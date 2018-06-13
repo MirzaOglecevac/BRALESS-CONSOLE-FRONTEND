@@ -16,6 +16,8 @@
                 padding: 0;
                 font-family: "sans-serif", "Roboto";
                 cursor: pointer;
+                padding: 9px 5px 0 5px;
+                border-bottom: 1px solid rgba(100,100,100, 0.4);
             }
 
 
@@ -25,11 +27,11 @@
 
 
             #pornstarCard img {
-                width: 30px;
-                height: 30px;
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 display: inline-block;
-                padding: 5px;
+                border: 2px solid rgba(80,80,80,0.5);
             }
 
 
@@ -37,17 +39,17 @@
                 display: inline-block;
                 box-sizing: border-box;
                 text-align: center;
-                height: 40px;
+                height: 52px;
             }
 
 
-            #pornstarCard > div:first-child, #pornstarCard > div:last-child{
+            #pornstarCard > div:first-child  {  /*, #pornstarCard > div:last-child{ */
                 width: 10%;
             }
 
 
             #pornstarCard > div:nth-child(2), #pornstarCard > div:nth-child(4){
-                width: 25%;
+                width: 30%;
             }
 
 
@@ -111,9 +113,9 @@
                 <span id="subscribers"> {{entry.default_subscribers}} </span>
             </div>
 
-            <div id="icons">
+            <!-- <div id="icons">
                 <iron-icon icon="delete"></iron-icon>
-            </div>
+            </div> -->
         </div>
 
     </template>

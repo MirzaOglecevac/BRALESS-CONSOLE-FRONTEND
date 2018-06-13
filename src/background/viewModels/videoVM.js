@@ -26,7 +26,7 @@ VideoVM = function(superClass, VideoModel, Configuration) {
 
             // setup iron request
             VideoModel.requestIron(url,endpoint,request,coreAjax,this);
-            VideoModel.getVideos();
+            VideoModel.getSearchVideos();
         }
 
 
@@ -40,7 +40,9 @@ VideoVM = function(superClass, VideoModel, Configuration) {
             if(e.detail.kind == 'video'){
                 var data = this.videos;
                 this.videos = data.concat(e.detail.response.data);
-                this.from +=20;
+                this.from += 20;
+                this.$.loaderContainer.style="display: none";
+                this.$.videosContainer.style="display: flex";
 
                 if(e.detail.response.data.length < 20){
                     this.$.loadMore.style="display: none";
@@ -49,6 +51,9 @@ VideoVM = function(superClass, VideoModel, Configuration) {
                 this.videos = [];
                 this.videos = e.detail.response.data;
                 this.$.loadMore.style="display: none";
+                this.$.backToMain.style = "display: block;";
+                this.$.loaderContainer.style="display: none";
+                this.$.videosContainer.style="display: flex";
             }
 
 

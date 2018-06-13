@@ -24,7 +24,6 @@ PornstarVM = function(superClass, PornstarModel, Configuration) {
             var request = 'search-pornstar';
             var coreAjax = ironRequest;
 
-            console.log(endpoint);
             // setup iron request
             PornstarModel.requestIron(url,endpoint,request,coreAjax,this);
             PornstarModel.getSearchPornstars();
@@ -42,6 +41,8 @@ PornstarVM = function(superClass, PornstarModel, Configuration) {
                 var data = this.pornstars;
                 this.pornstars = data.concat(e.detail.response.data);
                 this.from +=20;
+                this.$.loaderContainer.style="display: none";
+                this.$.pornstarsContainer.style="display: block";
 
                 if(e.detail.response.data.length < 20){
                     this.$.loadMore.style="display: none";
@@ -50,6 +51,10 @@ PornstarVM = function(superClass, PornstarModel, Configuration) {
                 this.pornstars = [];
                 this.pornstars = e.detail.response.data;
                 this.$.loadMore.style="display: none";
+                this.$.backToMain.style = "display: block;";
+                this.$.loaderContainer.style="display: none";
+                this.$.pornstarsContainer.style="display: block";
+
             }
 
 

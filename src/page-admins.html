@@ -80,12 +80,26 @@
         ready(){
           super.ready();
           this.getAdmins(this.$.ironAjax);
+
+          this._checkEvents();
         }
 
 
         _adminDataChanged(){
             this.$.adminList.render();
         }
+
+        _checkEvents(){
+
+            this.addEventListener('delete-admin', (e) => this._delete(e));
+
+        }
+
+
+        _delete(e){
+          this.deleteAdmin(this.$.ironAjax, e.detail.id);
+        }
+
     }
 
     window.customElements.define(PageAdmins.is, PageAdmins);

@@ -79,6 +79,41 @@
         display: none;
       }
 
+      /* Back to main part */
+
+      #backToMain {
+        cursor: pointer;
+        display: none;
+        position: relative;
+        bottom: 20px;
+      }
+
+
+      iron-icon {
+        --iron-icon-fill-color: #333;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        cursor: pointer;
+      }
+
+
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 30vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
     </style>
 
 
@@ -95,6 +130,17 @@
       </div>
 
       <br/><br/>
+
+      <p id="backToMain" on-click="_getBackFromSearch">
+        <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
+        Return from search results
+      </p>
+
+
+
+      <div id="loaderContainer">
+        <paper-spinner id="loader" active class="thin"></paper-spinner>
+      </div>
 
       <div id="videosContainer">
 
@@ -113,8 +159,6 @@
 
 
     </div>
-
-
 
 
   </template>
@@ -151,6 +195,9 @@
             super.ready();
             this.getVideos(this.$.ironAjax, this.from, this.limit);
 
+            this.$.videosContainer.style="display: none";
+            this.$.loadMore.style="display: none";
+
             this._checkEvents();
         }
 
@@ -174,8 +221,23 @@
 
 
         _searchVideos(e){
+            this.$.loadMore.style="display: none";
+            this.$.videosContainer.style="display: none";
+            this.$.loaderContainer.style="display: block";
             this.searchValue = e.detail.value;
             this.getSearchVideos(this.$.ironAjax, this.searchValue);
+        }
+
+        _getBackFromSearch(){
+            this.from = 0;
+            this.limit = 20;
+            this.videos = [];
+            this.getVideos(this.$.ironAjax, this.from, this.limit);
+            this.$.backToMain.style = "display: none;";
+            this.$.videosContainer.style="display: none";
+            this.$.loaderContainer.style="display: block";
+            this.$.loadMore.style="display: block";
+
         }
     }
 
