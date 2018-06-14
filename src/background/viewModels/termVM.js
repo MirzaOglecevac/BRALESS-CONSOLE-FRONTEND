@@ -26,7 +26,7 @@ TermVM = function(superClass,TermModel,Configuration) {
 
             // setup iron request
             TermModel.requestIron(url,endpoint,request,coreAjax,this);
-            TermModel.updateTerms();
+            TermModel.updateTerms(body);
         }
 
 

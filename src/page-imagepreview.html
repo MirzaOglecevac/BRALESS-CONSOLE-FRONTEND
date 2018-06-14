@@ -11,14 +11,13 @@
 
 <link rel="import" href="shared-styles.html">
 
-
 <!-- Scripts -->
-<script src="background/viewModels/videopreviewVM.js"></script>
-<script src="background/models/videopreviewModel.js"></script>
+<script src="background/viewModels/imagepreviewVM.js"></script>
+<script src="background/models/imagepreviewModel.js"></script>
 <script src="background/core/configuration.js"></script>
 
 
-<dom-module id="page-videopreview">
+<dom-module id="page-imagepreview">
   <template>
     <style include="shared-styles">
 
@@ -59,12 +58,30 @@
       }
 
 
-      iframe {
+      #bigImage {
         height: 350px;
         width: 100%;
-        //max-width: 550px;
+        max-width: 500px;
+        box-shadow: 2px 3px 2px rgba(150,150,150,0.5);
       }
 
+
+      textarea {
+        outline: none;
+        border: none;
+        width: 300px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        resize: none;
+        padding: 5px 5px 5px 10px;
+        text-indent: 5px;
+        box-sizing: border-box;
+        overflow: auto;
+        font-size: 16px;
+        font-family: "sans-serif", "Roboto Mono";
+      }
 
 
       table td {
@@ -77,6 +94,7 @@
         color: #333;
         opacity: 0.84;
       }
+
 
       table .inputElement {
         outline: none;
@@ -100,10 +118,12 @@
         position: relative;
       }
 
+
       paper-button {
         padding: 5px;
         width: 100px;
       }
+
 
       #editButton {
         background-color: #333;
@@ -127,6 +147,7 @@
         position: absolute;
         right: 10px;
       }
+
 
       /* Loader */
 
@@ -173,6 +194,7 @@
         margin-left: -20px;
       }
 
+
       #commentHeading {
         margin: 0 auto;
         width: 150px;
@@ -180,6 +202,12 @@
         font-size: 18px;
         color: #333;
         opacity: 0.84;
+      }
+
+
+
+      #comments {
+        display: none;
       }
 
     </style>
@@ -202,19 +230,18 @@
     </div>
 
 
-
     <div id="mainContainer">
 
       <br/>
 
-      <a href="/videos">
+      <a href="/images">
         <p>
           <iron-icon id="arrowBack" icon="arrow-back"></iron-icon>
-          Back to videos page
+          Back to images page
         </p>
       </a>
 
-        <iframe src="{{videoData.video_url}}"></iframe>
+        <img id="bigImage" src$="{{imageData.image_link}}" />
 
       <br/>
 
@@ -222,51 +249,31 @@
           <tr>
             <td class="left"> Title: </td>
             <td>
-              <input id="title" class="inputElement" value="{{videoData.title}}" disabled/>
+              <input id="title" class="inputElement" value="{{imageData.title}}" disabled/>
             </td>
           </tr>
 
           <tr>
-            <td class="left"> Video URL: </td>
+            <td class="left"> Image URL: </td>
             <td>
-              <input id="videourl" class="inputElement" value="{{videoData.video_url}}" disabled/>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="left"> Video thumbnail: </td>
-            <td>
-              <input id="videothumbnail" class="inputElement" value="{{videoData.thumbnail}}" disabled/>
+              <input id="imageurl" class="inputElement" value="{{imageData.image_link}}" disabled/>
             </td>
           </tr>
 
           <tr>
             <td class="left"> Date created: </td>
             <td>
-              <input id="date" class="inputElement" value="{{videoData.date}}" disabled/>
+              <input id="date" class="inputElement" value="{{imageData.date}}" disabled/>
             </td>
           </tr>
 
           <tr>
-            <td class="left"> Duration: </td>
+            <td class="left"> Description: </td>
             <td>
-              <input id="duration" type="number" class="inputElement" value="{{videoData.duration}}" disabled/>
+              <textarea id="description" value="{{imageData.description}}" disabled></textarea>
             </td>
           </tr>
 
-          <tr>
-            <td class="left"> HD: </td>
-            <td>
-              <input id="hd" class="inputElement" value="{{videoData.hd}}" disabled/>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="left"> Tags: </td>
-            <td>
-              <input id="tags" class="inputElement" value="{{videoData.tags.0.name}}" disabled/>
-            </td>
-          </tr>
 
         </table>
 
@@ -274,18 +281,18 @@
         <br/>
 
         <div id="buttonsContainer">
-          <paper-button id="editButton" raised on-click="_editVideo">Edit</paper-button>
-          <paper-button id="saveButton" raised on-click="_saveVideo">Save</paper-button>
-          <paper-button id="deleteButton" raised on-click="_deleteVideo">Delete</paper-button>
+          <paper-button id="editButton" raised on-click="_editImage">Edit</paper-button>
+          <paper-button id="saveButton" raised on-click="_saveImage">Save</paper-button>
+          <paper-button id="deleteButton" raised on-click="_deleteImage">Delete</paper-button>
         </div>
 
         <br/>
 
 
       <div id="commentsContainer">
-        <paper-button id="commentButton" raised on-click="_getComments">Load video comments</paper-button>
+        <paper-button id="commentButton" raised on-click="_getComments">Load image comments</paper-button>
         <paper-spinner id="loaderComm" active class="thin"></paper-spinner>
-        <p id="commentHeading"></p>
+        <p id="commentHeading"> </p>
 
         <br/>
 
@@ -308,15 +315,15 @@
 
   <script>
 
-    class PageVideoPreview extends VideopreviewVM(Polymer.Element, VideopreviewModel, Configuration) {
-      static get is() { return 'page-videopreview'; }
+    class PageImagePreview extends ImagepreviewVM(Polymer.Element, ImagepreviewModel, Configuration) {
+      static get is() { return 'page-imagepreview'; }
 
         static get properties() {
             return {
                 id: {
                     type: String
                 },
-                videoData: {
+                imageData: {
                     type: Array
                 },
                 comments: {
@@ -339,7 +346,7 @@
 
             this.$.mainContainer.style="display: none";
 
-            this.getVideoData(this.$.ironAjax, this.id);
+            this.getImageData(this.$.ironAjax, this.id);
         }
 
       /* FUNCTIONS */
@@ -352,47 +359,37 @@
 
         _checkEvents(){
             this.addEventListener('delete-comment', (e) => this._deleteComment(e));
-
         }
 
 
-        _editVideo(){
+        _editImage(){
             this.$.title.disabled = false;
-            this.$.videourl.disabled = false;
-            this.$.videothumbnail.disabled = false;
+            this.$.imageurl.disabled = false;
             this.$.date.disabled = false;
-            this.$.duration.disabled = false;
-            this.$.hd.disabled = false;
-            this.$.tags.disabled = false;
+            this.$.description.disabled = false;
 
             this.$.saveButton.style = "display: block";
 
         }
 
 
-        _saveVideo(){
+        _saveImage(){
             // function
             this.$.saveButton.style = "display: none";
             this.$.title.disabled = true;
-            this.$.videourl.disabled = true;
-            this.$.videothumbnail.disabled = true;
+            this.$.imageurl.disabled = true;
             this.$.date.disabled = true;
-            this.$.duration.disabled = true;
-            this.$.hd.disabled = true;
-            this.$.tags.disabled = true;
+            this.$.description.disabled = true;
 
             var body = JSON.stringify({
                 "id": this.id,
                 "title": this.$.title.value,
-                "thumbnail": this.$.videothumbnail.value,
-                "video_url": this.$.videourl.value,
+                "image_url": this.$.imageurl.value,
                 "date": this.$.date.value,
-                "length": this.$.duration.value,
-                "hd": this.$.hd.value,
-                "tags": this.$.tags.value
+                "description": this.$.description.value
             });
 
-            this.updateVideoData(this.$.ironAjax, body);
+            this.updateImageData(this.$.ironAjax, body);
 
         }
 
@@ -401,19 +398,18 @@
         }
 
 
-        _deleteVideo(){
-            this.deleteVideoData(this.$.ironAjax, this.id);
+        _deleteImage(){
+            this.deleteImageData(this.$.ironAjax, this.id);
         }
 
         _getComments(){
             this.$.commentButton.style="display: none";
-            this.$.loaderComm.style="display: block";
-            this.$.commentHeading.style="display: none";
-            this.getVideoComments(this.$.ironAjax, this.id);
-
+            this.$.commentHeading.style="display: block;";
+            this.$.comments.style="display: block;";
+            this.getImageComments(this.$.ironAjax, this.id);
         }
     }
 
-    window.customElements.define(PageVideoPreview.is, PageVideoPreview);
+    window.customElements.define(PageImagePreview.is, PageImagePreview);
   </script>
 </dom-module>

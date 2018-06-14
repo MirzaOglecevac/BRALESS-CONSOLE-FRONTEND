@@ -75,7 +75,7 @@
 
         </style>
 
-        <div id="mainContainer">
+        <div id="mainContainer" on-click="_redirectToImagePreviewPage">
             <div id="imageCard">
 
                 <div id="tools">
@@ -111,6 +111,12 @@
                 }
 
                 return title;
+            }
+
+
+            _redirectToImagePreviewPage(){
+
+                location.href = "/imagepreview/" + this.entry.id;
             }
 
         }

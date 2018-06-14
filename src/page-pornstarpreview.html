@@ -2,6 +2,7 @@
 <!-- Import elements -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
@@ -24,6 +25,7 @@
         display: flex;
         flex-direction: column;
         width: 80%;
+        max-width: 1000px;
         margin: 0 auto;
         min-width: 350px;
         font-family: "sans-serif", "Roboto Mono";
@@ -214,6 +216,23 @@
         bottom: 33px;
       }
 
+      /* Loader */
+
+      #loaderContainer {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+      #loader {
+        position: relative;
+        top: 35vh;
+        left: 45%;
+        width: 70px;
+        height: 70px;
+      }
+
     </style>
 
 
@@ -232,6 +251,11 @@
     <img id="hiddenImage" src=""/>
 
 
+    <div id="loaderContainer">
+      <paper-spinner id="loader" active class="thin"></paper-spinner>
+    </div>
+
+
     <div id="mainContainer">
 
       <br/>
@@ -247,7 +271,7 @@
 
       <!-- <pornstar-info-box></pornstar-info-box> -->
       <div id="infoBox">
-        <img src$="{{pornstarData.profile_image}}">
+        <img src$="{{_checkImage(pornstarData.profile_image)}}">
         <span> {{pornstarData.name}} </span>
       </div>
 
@@ -387,6 +411,8 @@
             var href = location.href;
             this.id = href.substring(href.lastIndexOf('/')+1);
 
+            this.$.mainContainer.style="display: none";
+
             this.getPornstarData(this.$.ironAjax, this.id);
         }
 
@@ -408,6 +434,15 @@
 
         _hideImage(){
             this.$.hiddenImage.style="display: none";
+        }
+
+
+        _checkImage(img){
+            if(img){
+                return img;
+            }else {
+                return "../images/pornstar_placeholder.jpg";
+            }
         }
 
         _editPornstar(){
@@ -435,6 +470,7 @@
             this.$.bannerImage.disabled = true;
 
             var body = JSON.stringify({
+                "id": this.id,
                 "name": this.$.name.value,
                 "age": this.$.age.value,
                 "sex": this.$.gender.value,
@@ -449,6 +485,8 @@
 
 
         _deletePornstar(){
+
+            return;
             this.deletePornstarData(this.$.ironAjax, this.id);
         }
     }

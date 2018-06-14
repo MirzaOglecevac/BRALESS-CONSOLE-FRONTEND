@@ -35,7 +35,7 @@ PornstarpreviewVM = function(superClass, PornstarpreviewModel, Configuration) {
             var endpoint = '/pornstar/edit';
             var request = 'pornstar-update';
             var coreAjax = ironRequest;
-            console.log(body);
+
             // setup iron request
             PornstarpreviewModel.requestIron(url,endpoint,request,coreAjax,this);
             PornstarpreviewModel.updatePornstarData(body);
@@ -53,11 +53,15 @@ PornstarpreviewVM = function(superClass, PornstarpreviewModel, Configuration) {
             if(e.detail.kind == 'pornstar-preview'){
                 console.log(e.detail.response.data[0]);
                 this.pornstarData = e.detail.response.data[0];
+                this.$.loaderContainer.style="display: none";
+                this.$.mainContainer.style="display: flex";
             }else if(e.detail.kind == 'pornstar-delete'){
-                console.log(e.detail);
-                //location.href = '/pornstars';
+                location.href = '/pornstars';
             }else if(e.detail.kind == 'pornstar-update'){
-                console.log('data updated');
+                this.$.loaderContainer.style="display: block";
+                this.$.mainContainer.style="display: none";
+                this.getPornstarData(this.$.ironAjax, this.id);
+
             }
 
 

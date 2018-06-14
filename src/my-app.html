@@ -10,9 +10,12 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
 <link rel="import" href="my-icons.html">
@@ -25,6 +28,7 @@
 <link rel="lazy-import" href="page-videos.html">
 <link rel="lazy-import" href="page-videopreview.html">
 <link rel="lazy-import" href="page-images.html">
+<link rel="lazy-import" href="page-imagepreview.html">
 <link rel="lazy-import" href="page-statistic.html">
 <link rel="lazy-import" href="page-terms.html">
 <link rel="lazy-import" href="page-404.html">
@@ -36,9 +40,15 @@
 <!-- Models -->
 <script src="background/models/adminModel.js"></script>
 <script src="background/models/videoModel.js"></script>
+<script src="background/models/appModel.js"></script>
+
 
 <!-- ViewModels -->
 <script src="background/viewModels/videoVM.js"></script>
+<script src="background/viewModels/appVM.js"></script>
+
+<script src="background/core/configuration.js"></script>
+
 
 
 <dom-module id="my-app">
@@ -70,9 +80,8 @@
         height: 25px;
         border-radius: 50%;
         position: fixed;
-        right: 15px;
+        right: 45px;
         bottom: 32px;
-        cursor: pointer;
       }
 
       app-toolbar #menuIcon {
@@ -114,10 +123,118 @@
       }
 
 
+      #menuIcon {
+
+      }
+
+
+      /* Login screen */
+
+      #loginScreen {
+        z-index: 1000;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        display: none;
+      }
+
+
+      #loginBox {
+        width: 40%;
+        min-width: 350px;
+        height: 250px;
+        background-color: #fff;
+        margin: 0 auto;
+        margin-top: -150px;
+        position: relative;
+        top: 50%;
+        display: flex;
+        flex-direction: column;
+      }
+
+
+      #logo {
+        width: 100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+
+      #logo img {
+        width: 200px;
+        margin-left: -100px;
+        height: 40px;
+        position: relative;
+        left: 50%;
+      }
+
+
+      #loginInput {
+        width: 100%;
+      }
+
+
+      #loginInput input {
+          width: 300px;
+          border: 1px solid #ccc;
+          position: relative;
+        left: 50%;
+        margin-left: -160px;
+        padding: 8px;
+        outline: none;
+        border-radius: 2px;
+        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        font-family: "sans-serif", "Roboto Mono";
+        font-size: 15px;
+        color: #333;
+      }
+
+
+      #loginInput input:first-child {
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+
+
+      #loginButton {
+        margin-top: 20px;
+      }
+
+
+      #loginButton #login {
+        background-color: #B200B7;
+        color: #fff;
+        padding: 5px;
+        width: 150px;
+        position: relative;
+        left: 50%;
+        margin-left: -75px;
+        text-transform: none;
+        text-align: center;
+      }
+
+
+      /* Logout button */
+
+      #logoutButton {
+        position: absolute;
+        right: 10px;
+        bottom: 33px;
+        cursor: pointer;
+      }
+
+
+
       /*.drawer-list a.iron-selected {*/
         /*color: #fff;*/
       /*}*/
+
     </style>
+
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
 
     <app-location
         route="{{route}}"
@@ -156,7 +273,16 @@
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
             <paper-icon-button id="menuIcon" icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <img id="userImage" src="../images/profile.png"/>
+            <img id="userImage" title="{{username}}" src$="{{userImage}}"/>
+            <div id="logoutButton" on-click="_logout" style="
+										width: 24px;
+										height: 24px;
+										background-color: #ed253d;
+										opacity: 0.84;
+										-webkit-mask-image: url('../images/power.svg');
+										-webkit-mask-size: 24px;">
+            </div>
+
           </app-toolbar>
         </app-header>
 
@@ -172,20 +298,48 @@
           <page-videos name="videos"></page-videos>
           <page-videopreview name="videopreview"></page-videopreview>
           <page-images name="images"></page-images>
+          <page-imagepreview name="imagepreview"></page-imagepreview>
           <page-statistic name="statistic"></page-statistic>
           <page-terms name="terms"></page-terms>
           <page-404 name="404"></page-404>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
+
+    <div id="loginScreen">
+      <div id="loginBox">
+
+        <div id="logo">
+          <img id="loginBoxImage" src="../images/braless-logo.png"/>
+        </div>
+
+        <div id="loginInput">
+          <input id="username" on-input="_checkTextColor" on-keydown="_ifEnter"/>
+          <br/>
+          <input id="password" type="password" on-keydown="_ifEnter"/>
+        </div>
+
+        <div id="loginButton">
+          <paper-button id="login" raised on-click="_checkIfAdminIsValid">Log in</paper-button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
   </template>
+
+
 
   <script>
     // Gesture events like tap and track generated from touch will not be
     // preventable, allowing for better scrolling performance.
     Polymer.setPassiveTouchGestures(true);
 
-    class MyApp extends Polymer.Element {
+    class MyApp extends AppVM(Polymer.Element, AppModel, Configuration) {
       static get is() { return 'my-app'; }
 
       static get properties() {
@@ -204,6 +358,13 @@
               type: Array,
               value: ['admins', 'users', 'pornstars', 'videos', 'images', 'statistic', 'terms']
           },
+            username: {
+              type: String
+            },
+            userImage: {
+              type: String,
+                value: sessionStorage.getItem("image")
+            }
         };
       }
 
@@ -212,6 +373,17 @@
           '_routePageChanged(routeData.page)',
         ];
       }
+
+
+      ready(){
+          super.ready();
+
+            if(sessionStorage.getItem("logged in") == "true"){
+                this.$.loginScreen.style = "display: none;"
+            }else {
+                this.$.loginScreen.style = "display: block;"
+            }
+        }
 
 
       _styleClickedMenuItem(event){
@@ -230,16 +402,50 @@
 
       }
 
+
+      _checkTextColor(){
+          if(this.$.username.value == ""){
+              this.$.username.style = "color: #333";
+          }
+        }
+
+
+
+        _checkIfAdminIsValid(){
+
+          var body = JSON.stringify({
+              "name": this.$.username.value,
+              "password": this.$.password.value
+          });
+
+          this.login(this.$.ironAjax, body);
+        }
+
+
+        _logout(){
+          sessionStorage.removeItem("logged in");
+          location.href = "/";
+        }
+
+
+        _ifEnter(event){
+            if(event.keyCode === 13){
+                this._checkIfAdminIsValid();
+            }
+        }
+
+
       _routePageChanged(page) {
         // If no page was found in the route data, page will be an empty string.
         // Default to 'view1' in that case.
-        this.page = page || 'view1';
+        this.page = page || 'admins';
 
         // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
       }
+
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
