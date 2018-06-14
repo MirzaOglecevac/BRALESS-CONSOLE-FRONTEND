@@ -1,0 +1,147 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+
+<dom-module id="dialog-add-admin">
+    <template>
+        <style include="shared-styles">
+
+
+           #dialogCard {
+               position: fixed;
+               width: 100%;
+               min-width: 350px;
+               height: 100%;
+               z-index: 50000;
+               background-color: transparent;
+           }
+
+
+           /* Confirm */
+
+           #confirm {
+               min-width: 350px;
+               width: 40px;
+               max-width: 500px;
+               background-color: #fff;
+               position: relative;
+               margin: -200px auto 0 auto;
+               top: 50%;
+               z-index: 100000;
+               box-sizing: border-box;
+               padding: 20px;
+           }
+
+           paper-button {
+               padding: 5px;
+               width: 112px;
+           }
+
+
+           #cancelButton {
+               background-color: #333;
+               color: #fff;
+               text-align: center;
+           }
+
+
+           #confirmButton {
+               background-color: #B200B7;
+               color: #fff;
+               text-align: center;
+           }
+
+
+           #confirmStatement {
+               font-weight: bold;
+               font-family: "sans-serif", "Roboto";
+               text-align: center;
+               font-size: 18px;
+               padding: 20px 10px 10px 10px;
+           }
+
+            #buttons {
+                width: 250px;
+                margin: 15px auto 0 auto;
+            }
+
+
+
+        </style>
+
+        <div id="dialogCard">
+
+             <div id="confirm">
+
+                 <paper-input id="name" always-float-label label="Name"></paper-input>
+                 <paper-input id="password" always-float-label label="Password"></paper-input>
+                 <paper-input id="email" always-float-label label="Email"></paper-input>
+                 <paper-input id="scope" always-float-label label="Scope"></paper-input>
+                 <paper-input id="image" always-float-label label="Image"></paper-input>
+
+                 <div id="buttons">
+                     <paper-button id="cancelButton" raised on-click="_closeDialog">Cancel</paper-button>
+                     <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
+                 </div>
+
+                 <!--     <p id="confirmStatement">
+                         Are you sure you want to proceed?
+                     </p>
+                     <div id="buttons">
+                         <paper-button id="cancelButton" raised on-click="_closeDialog">Cancel</paper-button>
+                         <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
+                     </div> -->
+             </div>
+
+
+
+        </div>
+
+    </template>
+
+    <script>
+        class DialogAddAdmin extends Polymer.Element {
+            static get is() { return 'dialog-add-admin'; }
+
+            static get properties() {
+                return {
+                    entry: Object
+                };
+            }
+
+
+            ready(){
+                super.ready();
+            }
+
+
+            _closeDialog(){
+                this.dispatchEvent(new CustomEvent('close-dialog', {
+                    bubbles: true, composed: true
+                }));
+            }
+
+
+            _procede() {
+
+                this.dispatchEvent(new CustomEvent('make-action', {
+                    bubbles: true, composed: true, detail: {
+                        value: "add-admin",
+                        name: this.$.name.value,
+                        password: this.$.password.value,
+                        email: this.$.email.value,
+                        scope: this.$.scope.value,
+                        image: this.$.image.value,
+                    }
+                }));
+
+            }
+
+        }
+
+        window.customElements.define(DialogAddAdmin.is, DialogAddAdmin);
+    </script>
+</dom-module>

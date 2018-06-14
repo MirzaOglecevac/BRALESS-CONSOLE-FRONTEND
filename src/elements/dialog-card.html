@@ -1,0 +1,146 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="dialog-card">
+    <template>
+        <style include="shared-styles">
+
+
+           #dialogCard {
+               position: fixed;
+               width: 100%;
+               height: 100%;
+               z-index: 50000;
+               background-color: transparent;
+           }
+
+
+           /* Confirm */
+
+           #confirm {
+               min-width: 350px;
+               width: 40px;
+               max-width: 500px;
+               height: 130px;
+               background-color: #fff;
+               position: relative;
+               margin: -100px auto 0 auto;
+               top: 50%;
+               z-index: 100000;
+           }
+
+           paper-button {
+               padding: 5px;
+               width: 112px;
+           }
+
+
+           #cancelButton {
+               background-color: #333;
+               color: #fff;
+               text-align: center;
+           }
+
+
+           #confirmButton {
+               background-color: #B200B7;
+               color: #fff;
+               text-align: center;
+           }
+
+
+           #confirmStatement {
+               font-weight: bold;
+               font-family: "sans-serif", "Roboto";
+               text-align: center;
+               font-size: 18px;
+               padding: 20px 10px 10px 10px;
+           }
+
+            #buttons {
+                width: 250px;
+                margin: 0 auto;
+            }
+
+
+
+        </style>
+
+        <div id="dialogCard">
+
+
+
+                <div id="confirm">
+                    <p id="confirmStatement">
+                        Are you sure you want to proceed?
+                    </p>
+                    <div id="buttons">
+                        <paper-button id="cancelButton" raised on-click="_closeDialog">Cancel</paper-button>
+                        <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
+                    </div>
+                </div>
+
+
+
+        </div>
+
+    </template>
+
+    <script>
+        class DialogCard extends Polymer.Element {
+            static get is() { return 'dialog-card'; }
+
+            static get properties() {
+                return {
+                    entry: Object
+                };
+            }
+
+
+            ready(){
+                super.ready();
+            }
+
+
+            _closeDialog(){
+                this.dispatchEvent(new CustomEvent('close-dialog', {
+                    bubbles: true, composed: true
+                }));
+            }
+
+
+            _procede(){
+
+                var page = location.href;
+                if(page.indexOf("pornstarpreview")  != -1){
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: "pornstar"
+                        }
+                    }));
+                }else if(page.indexOf("videopreview")  != -1){
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: "video"
+                        }
+                    }));
+                }else if(page.indexOf("imagepreview")  != -1){
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: "image"
+                        }
+                    }));
+                }
+
+
+            }
+
+
+
+        }
+
+        window.customElements.define(DialogCard.is, DialogCard);
+    </script>
+</dom-module>

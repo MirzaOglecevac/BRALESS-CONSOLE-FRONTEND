@@ -375,6 +375,7 @@
       <div id="buttonsContainer">
         <paper-button id="editButton" raised on-click="_editPornstar">Edit</paper-button>
         <paper-button id="saveButton" raised on-click="_savePornstar">Save</paper-button>
+
         <paper-button id="deleteButton" raised on-click="_deletePornstar">Delete</paper-button>
       </div>
 
@@ -396,6 +397,11 @@
                 },
                 pornstarData: {
                     type: Array
+                },
+                action: {
+                    type: String,
+                    value: this.action,
+                    observer: '_actionUpdated'
                 }
             };
         }
@@ -420,6 +426,16 @@
 
         ready(){
             super.ready();
+        }
+
+
+        _actionUpdated(){
+            console.log(this.action);
+
+            if(this.action == "pornstar"){
+                this._deletePornstarConfirmed();
+            }
+
         }
 
 
@@ -486,7 +502,16 @@
 
         _deletePornstar(){
 
-            return;
+            this.dispatchEvent(new CustomEvent('delete-pornstar', {
+                bubbles: true, composed: true, detail: {
+                    type: "confirm"
+                }
+            }));
+
+        }
+
+
+        _deletePornstarConfirmed(){
             this.deletePornstarData(this.$.ironAjax, this.id);
         }
     }

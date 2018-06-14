@@ -29,6 +29,19 @@ AdminVM = function(superClass,AdminModel,Configuration) {
             AdminModel.deleteAdmin();
         }
 
+
+        addAdmin(ironRequest, body) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/admin/add';
+            var request = 'add-admin';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            AdminModel.requestIron(url,endpoint,request,coreAjax,this);
+            AdminModel.addAdmin(body);
+        }
+
+
         ready(){
             super.ready();
             this.addEventListener('request-response', (e)=>this._requestResponse(e));

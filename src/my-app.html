@@ -15,10 +15,13 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
 <link rel="import" href="my-icons.html">
+
+<link rel="import" href="elements/dialog-card.html">
+<link rel="import" href="elements/dialog-add-admin.html">
+
 
 <!-- Page imports -->
 <link rel="lazy-import" href="page-admins.html">
@@ -226,6 +229,25 @@
 
 
 
+      /* Dialog */
+
+      #dialog, #dialogAdd {
+        display: none;
+      }
+
+
+      #dialogOverlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 50000;
+        background-color: #333;
+        opacity: 0.84;
+        display: none;
+      }
+
+
+
       /*.drawer-list a.iron-selected {*/
         /*color: #fff;*/
       /*}*/
@@ -291,14 +313,14 @@
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <page-admins name="admins"></page-admins>
+          <page-admins name="admins" action="[[actionEnded]]" data="[[dialogData]]"></page-admins>
           <page-users name="users"></page-users>
           <page-pornstars name="pornstars"></page-pornstars>
-          <page-pornstarpreview name="pornstarpreview"></page-pornstarpreview>
+          <page-pornstarpreview name="pornstarpreview" action="[[actionEnded]]"></page-pornstarpreview>
           <page-videos name="videos"></page-videos>
-          <page-videopreview name="videopreview"></page-videopreview>
+          <page-videopreview name="videopreview" action="[[actionEnded]]"></page-videopreview>
           <page-images name="images"></page-images>
-          <page-imagepreview name="imagepreview"></page-imagepreview>
+          <page-imagepreview name="imagepreview" action="[[actionEnded]]"></page-imagepreview>
           <page-statistic name="statistic"></page-statistic>
           <page-terms name="terms"></page-terms>
           <page-404 name="404"></page-404>
@@ -327,11 +349,12 @@
     </div>
 
 
-
+    <div id="dialogOverlay"></div>
+    <dialog-card id="dialog"></dialog-card>
+    <dialog-add-admin id="dialogAdd"></dialog-add-admin>
 
 
   </template>
-
 
 
   <script>
@@ -364,6 +387,14 @@
             userImage: {
               type: String,
                 value: sessionStorage.getItem("image")
+            },
+            actionEnded: {
+                type: String,
+                value: ""
+            }
+            ,
+            dialogData: {
+              type: Object
             }
         };
       }
@@ -383,7 +414,66 @@
             }else {
                 this.$.loginScreen.style = "display: block;"
             }
+
+            this._checkEvents();
+
         }
+
+
+        _checkEvents(){
+
+          // delete pornstar
+            this.addEventListener('delete-pornstar', (e) => this._checkDialog(e));
+
+            // delete video
+            this.addEventListener('delete-video', (e) => this._checkDialog(e));
+
+            // add admin
+            this.addEventListener('add-admin', (e) => this._checkDialog(e));
+
+            // close dialog
+            this.addEventListener('close-dialog', (e) => this._closeDialog(e));
+
+            // make action
+            this.addEventListener('make-action', (e) => this._sendConfirmationBack(e));
+
+
+        }
+
+
+        _checkDialog(e){
+
+          if(e.detail.type == "confirm"){
+              this.$.dialogOverlay.style="display: block;";
+              this.$.dialog.style="display: block";
+          }else  if(e.detail.type == "add-admin"){
+              this.$.dialogOverlay.style="display: block;";
+              this.$.dialogAdd.style="display: block";
+          }
+
+        }
+
+
+        _closeDialog(){
+            this.$.dialogOverlay.style="display: none;";
+            this.$.dialogAdd.style="display: none;";
+            this.$.dialog.style="display: none;";
+        }
+
+
+
+
+        _sendConfirmationBack(e){
+
+          var action = e.detail.value;
+          if(action == "add-admin"){
+              this.dialogData = e.detail;
+          }
+          this.actionEnded = action;
+          this._closeDialog();
+
+        }
+
 
 
       _styleClickedMenuItem(event){

@@ -322,6 +322,11 @@
                 comments: {
                     type: Array,
                     value: []
+                },
+                action: {
+                    type: String,
+                    value: this.action,
+                    observer: '_actionUpdated'
                 }
             };
         }
@@ -341,6 +346,16 @@
 
             this.getVideoData(this.$.ironAjax, this.id);
         }
+
+
+
+        _actionUpdated(){
+            if(this.action == "video"){
+                this._deleteVideoConfirmed();
+            }
+
+        }
+
 
       /* FUNCTIONS */
 
@@ -402,8 +417,19 @@
 
 
         _deleteVideo(){
+            this.dispatchEvent(new CustomEvent('delete-video', {
+                bubbles: true, composed: true, detail: {
+                    type: "confirm"
+                }
+            }));
+
+        }
+
+
+        _deleteVideoConfirmed(){
             this.deleteVideoData(this.$.ironAjax, this.id);
         }
+
 
         _getComments(){
             this.$.commentButton.style="display: none";

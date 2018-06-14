@@ -329,6 +329,11 @@
                 comments: {
                     type: Array,
                     value: []
+                },
+                action: {
+                    type: String,
+                    value: this.action,
+                    observer: '_actionUpdated'
                 }
             };
         }
@@ -339,6 +344,17 @@
                 '_itemChanged()'
             ]
         }
+
+
+
+        _actionUpdated(){
+
+            if(this.action == "image"){
+                this._deleteImageConfirmed();
+            }
+
+        }
+
 
         _itemChanged(){
             var href = location.href;
@@ -399,6 +415,15 @@
 
 
         _deleteImage(){
+            this.dispatchEvent(new CustomEvent('delete-pornstar', {
+                bubbles: true, composed: true, detail: {
+                    type: "confirm"
+                }
+            }));
+        }
+
+
+        _deleteImageConfirmed(){
             this.deleteImageData(this.$.ironAjax, this.id);
         }
 
