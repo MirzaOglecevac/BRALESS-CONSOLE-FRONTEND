@@ -47,15 +47,14 @@
             }
 
 
-            #adminCard > div:nth-child(2), #adminCard > div:nth-child(4){
-                width: 25%;
+            #adminCard > div:nth-child(2) {
+                width: 20%;
             }
 
 
             #adminCard > div:nth-child(3){
-                width: 30%;
+                width: 60%;
             }
-
 
             #adminCard span, #adminCard iron-icon {
                 position: relative;
@@ -78,13 +77,6 @@
             }
 
 
-            #scope {
-                display: inline-block;
-                color: #333;
-                padding: 5px;
-            }
-
-
             #adminCard iron-icon {
                 --iron-icon-width: 20px;
                 --iron-icon-height: 20px;
@@ -97,7 +89,7 @@
 
         <div id="adminCard">
             <div>
-                <img src$="{{_checkImage(entry.image)}}" />
+                <img id="image" src$="{{_checkImage(entry.image)}}" />
             </div>
 
             <div>
@@ -108,12 +100,10 @@
                 <span id="email"> {{entry.email}}</span>
             </div>
 
-            <div>
-                <span id="scope">{{entry.scope}}</span>
-            </div>
+
 
             <div id="icons">
-                <iron-icon icon="create"></iron-icon>
+                <iron-icon icon="create" on-click="_updateAdmin"></iron-icon>
                 <iron-icon icon="delete" on-click="_deleteAdmin"></iron-icon>
             </div>
         </div>
@@ -149,10 +139,25 @@
 
                 this.dispatchEvent(new CustomEvent('delete-admin', {
                     bubbles: true, composed: true, detail: {
-                        id: this.entry.id
+                        id: this.entry.id,
+                        type: "confirm"
                     }
                 }));
             }
+
+
+            _updateAdmin(){
+                this.dispatchEvent(new CustomEvent('update-admin', {
+                    bubbles: true, composed: true, detail: {
+                        id: this.entry.id,
+                        type: "update-admin",
+                        name: this.entry.name,
+                        email: this.entry.email,
+                        image: this.entry.image
+                    }
+                }));
+            }
+
 
         }
 

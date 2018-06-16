@@ -70,8 +70,6 @@
 
         <div id="dialogCard">
 
-
-
                 <div id="confirm">
                     <p id="confirmStatement">
                         Are you sure you want to proceed?
@@ -81,8 +79,6 @@
                         <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
                     </div>
                 </div>
-
-
 
         </div>
 
@@ -130,6 +126,20 @@
                     this.dispatchEvent(new CustomEvent('make-action', {
                         bubbles: true, composed: true, detail: {
                             value: "image"
+                        }
+                    }));
+                }else if(page.indexOf("users")  != -1){
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: "user",
+
+                        }
+                    }));
+                }else {
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: "admin",
+
                         }
                     }));
                 }

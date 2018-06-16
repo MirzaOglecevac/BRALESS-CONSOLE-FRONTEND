@@ -1,0 +1,290 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="shared-styles.html">
+
+<!-- Scripts -->
+<script src="background/viewModels/factoryVM.js"></script>
+<script src="background/models/factoryModel.js"></script>
+<script src="background/core/configuration.js"></script>
+
+<dom-module id="page-factory">
+  <template>
+    <style include="shared-styles">
+
+
+      #mainContainer {
+        width: 70%;
+        margin: 0 auto;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      #mainContainer > p {
+        text-transform: uppercase;
+        color: #333;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+      #mainContainer > div {
+        background-color: #333; //#B200B7;
+        opacity: 0.84;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        color: #fff;
+        box-shadow:  3px 4px 2px rgba(150,150,150,0.6);
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      .container > span {
+        padding: 0px 10px;
+      }
+
+
+      .button {
+        background-color: #B200B7;
+        color: #fff;
+        text-align: center;
+        padding: 5px;
+        width: 90px;
+        position: relative;
+        bottom: 4px;
+      }
+
+
+      #loadVideoSpinner, #loadVideosSpinner, #loadPornstarsSpinner, #loadPornstarSpinner {
+        height: 25px;
+        width: 25px;
+        position: relative;
+        left: 50px;
+        display: none;
+      }
+
+      .container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      .inputUrl {
+        border: 1px solid #bbb;
+        outline: none;
+        padding: 5px;
+        border-radius: 3px;
+        width: 200px;
+        height: 15px;
+      }
+
+      .inputNum {
+        border: 1px solid #bbb;
+        outline: none;
+        padding: 5px;
+        border-radius: 3px;
+        width: 30px;
+        height: 15px;
+      }
+
+
+      .buttonContainer {
+        width: 130px;
+        height: 50px;
+       }
+
+
+    </style>
+
+    <!-- HTTP Request -->
+    <iron-ajax id="ironAjax"></iron-ajax>
+
+    <div id="mainContainer">
+
+      <p>Scraper</p>
+
+      <div id="addVideo">
+        <p> Add single video </p>
+        <div class="container">
+          <span> URL: </span>
+          <input id="videoUrl" class="inputUrl" type="text"/>
+          <span class="buttonContainer">
+             <paper-spinner id="loadVideoSpinner" active></paper-spinner>
+             <paper-button id="addVideoButton" class="button" raised on-click="_addVideo">Add</paper-button>
+        </span>
+        </div>
+
+      </div>
+
+
+      <div id="addVideos">
+        <p> Add videos by page </p>
+        <div class="container">
+          <span> Start: </span>
+          <input id="videoStartNumber" class="inputNum" type="number"/>
+          <span> End: </span>
+          <input id="videoEndNumber" class="inputNum" type="number"/>
+          <span class="buttonContainer">
+            <paper-spinner id="loadVideosSpinner" active></paper-spinner>
+            <paper-button id="addVideosButton" class="button" raised on-click="_addVideos">Add</paper-button>
+          </span>
+        </div>
+      </div>
+
+
+      <div id="addPornstars">
+        <p> Add pornstars by page </p>
+        <div class="container">
+          <span> Start: </span>
+          <input id="pornstarStartNumber" class="inputNum" type="number"/>
+          <span> End: </span>
+          <input id="pornstarEndNumber" class="inputNum" type="number"/>
+          <span class="buttonContainer">
+            <paper-spinner id="loadPornstarsSpinner" active></paper-spinner>
+            <paper-button id="addPornstarsButton" class="button" raised on-click="_addPornstars">Add</paper-button>
+          </span>
+        </div>
+      </div>
+
+
+      <div id="addPornstar">
+        <p> Add pornstar profile </p>
+        <div class="container">
+          <span> URL: </span>
+          <input id="pornstarUrl" class="inputUrl" type="text"/>
+          <span class="buttonContainer">
+             <paper-spinner id="loadPornstarSpinner" active></paper-spinner>
+             <paper-button id="addPornstarButton" class="button" raised on-click="_addPornstar">Add</paper-button>
+        </span>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+
+  </template>
+
+  <script>
+    class PageFactory extends FactoryVM(Polymer.Element, FactoryModel, Configuration) {
+      static get is() { return 'page-factory'; }
+
+        static get properties() {
+            return {
+
+
+            };
+        }
+
+
+      /* FUNCTIONS */
+
+      ready(){
+          super.ready();
+
+
+        }
+
+
+        _addVideo(){
+
+          if(!this.$.videoUrl.value || this.$.videoUrl.value.indexOf('https://www.xvideos.com') == -1){
+              return;
+          }
+
+          this.$.loadVideoSpinner.style = "display: inline-block";
+          this.$.addVideoButton.style = "display: none";
+
+          var body = JSON.stringify({
+              "subject": "video",
+              "url": this.$.videoUrl.value,
+              "from": 0,
+              "limit": 0
+          });
+
+          this.addVideo(this.$.ironAjax, body);
+        }
+
+
+        _addVideos(){
+
+
+            if(!this.$.videoEndNumber.value || (this.$.videoEndNumber.value < this.$.videoStartNumber.value)){
+                return;
+            }
+
+            this.$.loadVideosSpinner.style = "display: inline-block";
+            this.$.addVideosButton.style = "display: none";
+
+            if(!this.$.videoEndNumber.value){
+                this.$.videoEndNumber.value = parseInt(this.$.videoStartNumber.value) + 1;
+            }
+
+            var body = JSON.stringify({
+                "subject": "videos",
+                "url": "",
+                "from": this.$.videoStartNumber.value,
+                "limit": this.$.videoEndNumber.value
+            });
+
+            this.addVideos(this.$.ironAjax, body);
+
+        }
+
+
+        _addPornstars(){
+
+
+            if(!this.$.pornstarEndNumber.value || (this.$.pornstarEndNumber.value < this.$.pornstarStartNumber.value)){
+                return;
+            }
+
+            this.$.loadPornstarsSpinner.style = "display: inline-block";
+            this.$.addPornstarsButton.style = "display: none";
+
+            if(!this.$.pornstarEndNumber.value){
+                this.$.pornstarEndNumber.value = parseInt(this.$.pornstarStartNumber.value) + 1;
+            }
+
+            var body = JSON.stringify({
+                "subject": "pornstars",
+                "url": "",
+                "from": this.$.pornstarStartNumber.value,
+                "limit": this.$.pornstarEndNumber.value
+            });
+
+            this.addPornstars(this.$.ironAjax, body);
+
+        }
+
+
+        _addPornstar(){
+
+            if(!this.$.pornstarUrl.value || this.$.pornstarUrl.value.indexOf('https://www.xvideos.com') == -1){
+                return;
+            }
+
+            this.$.loadPornstarSpinner.style = "display: inline-block";
+            this.$.addPornstarButton.style = "display: none";
+
+            var body = JSON.stringify({
+                "subject": "pornstar",
+                "url": this.$.pornstarUrl.value,
+                "from": 0,
+                "limit": 0
+            });
+
+            this.addPornstar(this.$.ironAjax, body);
+        }
+
+    }
+
+    window.customElements.define(PageFactory.is, PageFactory);
+  </script>
+</dom-module>

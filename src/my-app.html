@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -34,6 +35,7 @@
 <link rel="lazy-import" href="page-imagepreview.html">
 <link rel="lazy-import" href="page-statistic.html">
 <link rel="lazy-import" href="page-terms.html">
+<link rel="lazy-import" href="page-factory.html">
 <link rel="lazy-import" href="page-404.html">
 
 
@@ -248,6 +250,10 @@
 
 
 
+      #toast {
+        z-index: 60000;
+      }
+
       /*.drawer-list a.iron-selected {*/
         /*color: #fff;*/
       /*}*/
@@ -286,6 +292,7 @@
           <a id="images" name="page-images" href="[[rootPath]]images" on-click="_styleClickedMenuItem">images</a>
           <a id="statistic" name="page-statistic" href="[[rootPath]]statistic" on-click="_styleClickedMenuItem">Statistic</a>
           <a id="terms" name="page-terms" href="[[rootPath]]terms" on-click="_styleClickedMenuItem">Terms and conditions</a>
+          <a id="factory" name="page-factory" href="[[rootPath]]factory" on-click="_styleClickedMenuItem">Scraper</a>
         </iron-selector>
       </app-drawer>
 
@@ -313,8 +320,8 @@
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <page-admins name="admins" action="[[actionEnded]]" data="[[dialogData]]"></page-admins>
-          <page-users name="users"></page-users>
+          <page-admins name="admins" action="[[actionEnded]]" data="[[dialogData]]" adminscope="[[scope]]"></page-admins>
+          <page-users name="users" action="[[actionEnded]]" data="[[dialogData]]"></page-users>
           <page-pornstars name="pornstars"></page-pornstars>
           <page-pornstarpreview name="pornstarpreview" action="[[actionEnded]]"></page-pornstarpreview>
           <page-videos name="videos"></page-videos>
@@ -323,6 +330,7 @@
           <page-imagepreview name="imagepreview" action="[[actionEnded]]"></page-imagepreview>
           <page-statistic name="statistic"></page-statistic>
           <page-terms name="terms"></page-terms>
+          <page-factory name="factory"></page-factory>
           <page-404 name="404"></page-404>
         </iron-pages>
       </app-header-layout>
@@ -351,7 +359,8 @@
 
     <div id="dialogOverlay"></div>
     <dialog-card id="dialog"></dialog-card>
-    <dialog-add-admin id="dialogAdd"></dialog-add-admin>
+    <dialog-add-admin id="dialogAdd" data="[[dialogData]]"  trigg="[[trigger]]"></dialog-add-admin>
+    <paper-toast id="toast" text="All fields need to be filled."></paper-toast>
 
 
   </template>
@@ -395,6 +404,12 @@
             ,
             dialogData: {
               type: Object
+            },
+            adminToDelete: {
+              type: Number
+            },
+            trigger: {
+              type: Number
             }
         };
       }
@@ -438,17 +453,40 @@
             this.addEventListener('make-action', (e) => this._sendConfirmationBack(e));
 
 
+            this.addEventListener('open-toast', (e) => this._openToast(e));
+
+            this.addEventListener('delete-admin', (e) => this._checkDialog(e));
+
+            this.addEventListener('update-admin', (e) => this._checkDialog(e));
+
+
+            this.addEventListener('delete-user', (e) => this._checkDialog(e));
+
         }
 
+
+        _openToast(e){
+            this.$.toast.open();
+        }
 
         _checkDialog(e){
 
           if(e.detail.type == "confirm"){
+              if(e.detail.id){
+                  this.adminToDelete = e.detail.id;
+              }
               this.$.dialogOverlay.style="display: block;";
               this.$.dialog.style="display: block";
           }else  if(e.detail.type == "add-admin"){
               this.$.dialogOverlay.style="display: block;";
               this.$.dialogAdd.style="display: block";
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
+          }else  if(e.detail.type == "update-admin"){
+              this.$.dialogOverlay.style="display: block;";
+              this.$.dialogAdd.style="display: block";
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
           }
 
         }
@@ -461,14 +499,22 @@
         }
 
 
-
-
         _sendConfirmationBack(e){
 
           var action = e.detail.value;
           if(action == "add-admin"){
               this.dialogData = e.detail;
+          }else if(action == "admin"){
+              this.dialogData = e.detail;
+              this.dialogData.id = this.adminToDelete;
+          }else if(action == "user"){
+              this.dialogData = e.detail;
+              this.dialogData.id = this.adminToDelete;
+          }else if(action == "update-admin"){
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
           }
+
           this.actionEnded = action;
           this._closeDialog();
 

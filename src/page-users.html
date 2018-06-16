@@ -176,6 +176,17 @@
                 limit: {
                     type: Number,
                     value: 20
+                },
+                action: {
+                    type: String,
+                    value: this.action,
+                    observer: '_actionUpdated'
+                }
+                ,
+                data: {
+                    type: Object,
+                    value: this.data,
+                    observer: '_dialogDataChanged'
                 }
             };
         }
@@ -183,8 +194,7 @@
 
         ready(){
             super.ready();
-            this.getUsers(this.$.ironAjax, this.from, this.limit);
-
+            this._getUsers();
             this.$.usersContainer.style="display: none";
             this.$.loadMore.style="display: none";
 
@@ -192,9 +202,21 @@
         }
 
 
+        _getUsers(){
+            this.getUsers(this.$.ironAjax, this.from, this.limit);
+
+        }
+
+        _actionUpdated(){
+
+            if(this.action == "user"){
+                this._delete();
+            }
+
+        }
+
         _checkEvents(){
             this.addEventListener('search-value', (e) => this._searchVideos(e));
-            this.addEventListener('delete-user', (e) => this._delete(e));
         }
 
 
@@ -223,8 +245,8 @@
         }
 
 
-        _delete(e){
-            this.deleteUser(this.$.ironAjax, e.detail.id);
+        _delete(){
+            this.deleteUser(this.$.ironAjax, this.data.id);
         }
 
     }

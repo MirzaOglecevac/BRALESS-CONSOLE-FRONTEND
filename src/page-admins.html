@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
 <link rel="import" href="elements/admin-card.html">
 <link rel="import" href="shared-styles.html">
 
@@ -66,6 +67,7 @@
 
       </div>
 
+
       <paper-fab id="fab" icon="add" on-click="_addAdmin"></paper-fab>
     </div>
 
@@ -101,10 +103,17 @@
 
         ready(){
           super.ready();
-          this.getAdmins(this.$.ironAjax);
 
-          this._checkEvents();
+          this._getAdmins();
+
+          //this._checkEvents();
         }
+
+
+        _getAdmins(){
+            this.getAdmins(this.$.ironAjax);
+        }
+
 
 
         _adminDataChanged(){
@@ -113,17 +122,19 @@
 
 
         _actionUpdated(){
-            console.log(this.action);
 
             if(this.action == "add-admin"){
                 this._addAdminConfirmed();
+            }else if(this.action == "admin"){
+                this._delete();
+            }else if(this.action == "update-admin"){
+                this._updateAdmin();
             }
 
         }
 
 
         _addAdmin(){
-          console.log("kkk");
             this.dispatchEvent(new CustomEvent('add-admin', {
                 bubbles: true, composed: true, detail: {
                     type: "add-admin"
@@ -132,27 +143,39 @@
         }
 
 
+        _updateAdmin(){
+            var body = JSON.stringify({
+                "id": this.data.id,
+                "name": this.data.name,
+                "email": this.data.email,
+                "image": this.data.image
+            });
+
+            this.updateAdmin(this.$.ironAjax, body);
+        }
+
+
         _addAdminConfirmed(){
 
           var body = JSON.stringify({
-              "name": this.data.name,
               "password": this.data.password,
+              "name": this.data.name,
               "email": this.data.email,
-              "scope": this.data.scope,
               "image": this.data.image
           });
-
             this.addAdmin(this.$.ironAjax, body);
         }
 
 
-        _checkEvents(){
-            this.addEventListener('delete-admin', (e) => this._delete(e));
-        }
+        // _checkEvents(){
+        //     this.addEventListener('delete-admin', (e) => this._delete(e));
+        // }
 
 
-        _delete(e){
-          this.deleteAdmin(this.$.ironAjax, e.detail.id);
+
+
+        _delete(){
+          this.deleteAdmin(this.$.ironAjax, this.data.id);
         }
 
 

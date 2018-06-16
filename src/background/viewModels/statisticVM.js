@@ -26,7 +26,7 @@ StatisticVM = function(superClass,StatisticModel,Configuration) {
         _requestResponse(e) {
             this.statistic = e.detail.response.data[0];
             this.$.loaderContainer.style="display: none";
-            this.$.statisticContainer.style="display: block";
+            this.$.statisticContainer.style="display: flex";
         }
     }
 

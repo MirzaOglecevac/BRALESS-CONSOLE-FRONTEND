@@ -176,9 +176,11 @@
 
                 this.dispatchEvent(new CustomEvent('delete-user', {
                     bubbles: true, composed: true, detail: {
-                        id: this.entry.id
+                        id: this.entry.id,
+                        type: "confirm"
                     }
                 }));
+
             }
         }
 

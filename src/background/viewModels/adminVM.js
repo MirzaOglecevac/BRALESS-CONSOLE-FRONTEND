@@ -42,6 +42,18 @@ AdminVM = function(superClass,AdminModel,Configuration) {
         }
 
 
+        updateAdmin(ironRequest, body) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/admin/info';
+            var request = 'update-admin';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            AdminModel.requestIron(url,endpoint,request,coreAjax,this);
+            AdminModel.updateAdmin(body);
+        }
+
+
         ready(){
             super.ready();
             this.addEventListener('request-response', (e)=>this._requestResponse(e));
@@ -53,7 +65,11 @@ AdminVM = function(superClass,AdminModel,Configuration) {
             if(e.detail.kind == "admin"){
                 this.admins = e.detail.response.data;
             }else if(e.detail.kind == "admin-delete"){
-                console.log("admin deleted");
+                this._getAdmins();
+            }else if(e.detail.kind == "add-admin"){
+                this._getAdmins();
+            }else if(e.detail.kind == "update-admin"){
+                this._getAdmins();
             }
         }
     }

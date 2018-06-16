@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 
+
 <dom-module id="dialog-add-admin">
     <template>
         <style include="shared-styles">
@@ -35,6 +36,17 @@
                padding: 20px;
            }
 
+
+           #confirm > p {
+               font-family: "sans-serif", "Roboto Mono";
+               font-size: 16px;
+               margin-top: -5px;
+               margin-bottom: -5px;
+               width: 100%;
+               text-align: center;
+               text-transform: uppercase;
+           }
+
            paper-button {
                padding: 5px;
                width: 112px;
@@ -55,14 +67,6 @@
            }
 
 
-           #confirmStatement {
-               font-weight: bold;
-               font-family: "sans-serif", "Roboto";
-               text-align: center;
-               font-size: 18px;
-               padding: 20px 10px 10px 10px;
-           }
-
             #buttons {
                 width: 250px;
                 margin: 15px auto 0 auto;
@@ -76,10 +80,11 @@
 
              <div id="confirm">
 
+                 <p id="heading"> </p>
+
                  <paper-input id="name" always-float-label label="Name"></paper-input>
                  <paper-input id="password" always-float-label label="Password"></paper-input>
                  <paper-input id="email" always-float-label label="Email"></paper-input>
-                 <paper-input id="scope" always-float-label label="Scope"></paper-input>
                  <paper-input id="image" always-float-label label="Image"></paper-input>
 
                  <div id="buttons">
@@ -87,13 +92,6 @@
                      <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
                  </div>
 
-                 <!--     <p id="confirmStatement">
-                         Are you sure you want to proceed?
-                     </p>
-                     <div id="buttons">
-                         <paper-button id="cancelButton" raised on-click="_closeDialog">Cancel</paper-button>
-                         <paper-button id="confirmButton" raised on-click="_procede">Confirm</paper-button>
-                     </div> -->
              </div>
 
 
@@ -108,13 +106,47 @@
 
             static get properties() {
                 return {
-                    entry: Object
+                    entry: Object,
+                    data: {
+                        type: Object,
+                        value: this.data,
+                        observer: '_dialogDataChanged'
+                    },
+                    trigg: {
+                        type: Number,
+                        value: this.trigg,
+                        observer: '_triggerFired'
+                    },
+                    action: {
+                        type: String
+                    }
+
                 };
             }
 
 
             ready(){
                 super.ready();
+            }
+
+
+            _triggerFired(){
+
+                if(this.data.type == "update-admin"){
+                    this.$.name.value = this.data.name;
+                    this.$.email.value = this.data.email;
+                    this.$.image.value = this.data.image;
+                    this.$.password.style="display: none";
+                    this.$.heading.innerHTML = "Update admin";
+                    this.action = "update-admin";
+                }else {
+                    this.$.name.value = "";
+                    this.$.email.value = "";
+                    this.$.image.value = "";
+                    this.$.password.style="display: block";
+                    this.$.heading.innerHTML = "Add admin";
+                    this.action = "add-admin";
+                }
             }
 
 
@@ -126,17 +158,41 @@
 
 
             _procede() {
+                var name = this.$.name.value;
+                var password = this.$.password.value;
+                var email = this.$.email.value;
+                var image = this.$.image.value;
 
-                this.dispatchEvent(new CustomEvent('make-action', {
-                    bubbles: true, composed: true, detail: {
-                        value: "add-admin",
-                        name: this.$.name.value,
-                        password: this.$.password.value,
-                        email: this.$.email.value,
-                        scope: this.$.scope.value,
-                        image: this.$.image.value,
-                    }
-                }));
+                if(name.length == 0 || email.length == 0 || image.length == 0){
+                    this.dispatchEvent(new CustomEvent('open-toast', {
+                        bubbles: true, composed: true
+                    }));
+                    return;
+                }
+
+                if(this.action == "add-admin"){
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            value: this.action,
+                            name: name,
+                            password: password,
+                            email: email,
+                            image: image
+                        }
+                    }));
+                }else {
+                    this.dispatchEvent(new CustomEvent('make-action', {
+                        bubbles: true, composed: true, detail: {
+                            id: this.data.id,
+                            value: this.action,
+                            name: name,
+                            email: email,
+                            image: image
+                        }
+                    }));
+                }
+
+
 
             }
 

@@ -50,6 +50,7 @@ UserVM = function(superClass,UserModel,Configuration) {
         _requestResponse(e) {
 
             if(e.detail.kind == 'user'){
+
                 var data = this.users;
                 this.users = data.concat(e.detail.response.data);
                 this.from += 20;
@@ -68,8 +69,10 @@ UserVM = function(superClass,UserModel,Configuration) {
                 this.$.usersContainer.style="display: block";
 
             }else if(e.detail.kind == 'user-delete'){
-
-                console.log("user deleted");
+                this.users = [];
+                this.from = 0;
+                this.limit = 20;
+                this._getUsers();
             }
 
 
