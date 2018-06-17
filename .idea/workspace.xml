@@ -2,31 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdc9696a-33f9-42dd-88b9-8f037804635f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/models/factoryModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/models/factoryModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/models/pornstarpreviewModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/models/pornstarpreviewModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/adminVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/adminVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/appVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/appVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/factoryVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/factoryVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/imageVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/imageVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/pornstarVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/pornstarVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/pornstarpreviewVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/pornstarpreviewVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/background/viewModels/userVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/background/viewModels/userVM.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/admin-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/admin-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/dialog-add-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/dialog-add-admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/dialog-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/dialog-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/image-box.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/image-box.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/pornstar-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/pornstar-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/elements/user-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/elements/user-card.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/my-app.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/my-app.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-admins.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-admins.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-factory.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-factory.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-imagepreview.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-imagepreview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-images.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-images.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-pornstarpreview.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-pornstarpreview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-pornstars.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-pornstars.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-users.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-users.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/page-videopreview.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/page-videopreview.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="my-app.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="my-app.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my-app.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="459" column="29" selection-start-line="459" selection-start-column="29" selection-end-line="459" selection-end-column="29" />
+            <state relative-caret-position="131">
+              <caret line="443" column="37" selection-start-line="443" selection-start-column="37" selection-end-line="443" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -58,7 +34,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="factoryVM.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="factoryVM.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/background/viewModels/factoryVM.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-60">
@@ -145,10 +121,10 @@
         <option value="$PROJECT_DIR$/src/page-imagepreview.html" />
         <option value="$PROJECT_DIR$/src/background/viewModels/pornstarVM.js" />
         <option value="$PROJECT_DIR$/src/background/viewModels/userVM.js" />
-        <option value="$PROJECT_DIR$/src/my-app.html" />
         <option value="$PROJECT_DIR$/src/page-factory.html" />
         <option value="$PROJECT_DIR$/src/background/models/factoryModel.js" />
         <option value="$PROJECT_DIR$/src/background/viewModels/factoryVM.js" />
+        <option value="$PROJECT_DIR$/src/my-app.html" />
       </list>
     </option>
   </component>
@@ -216,7 +192,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1280" />
     <option name="height" value="709" />
@@ -369,25 +345,25 @@
       <workItem from="1528950599387" duration="523000" />
       <workItem from="1528960083608" duration="29517000" />
       <workItem from="1529040422292" duration="39836000" />
-      <workItem from="1529173553596" duration="13321000" />
+      <workItem from="1529173553596" duration="13732000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128525000" />
+    <option name="totallyTimeSpent" value="128936000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="709" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="709" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.807571" visible="true" weight="0.25416997" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.8071895" visible="true" weight="0.25416997" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32843137" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32907802" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info id="Structure" order="1" sideWeight="0.19242902" side_tool="true" visible="true" weight="0.25416997" />
+      <window_info id="Structure" order="1" sideWeight="0.19281046" side_tool="true" visible="true" weight="0.25416997" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3154574" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -707,13 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/my-app.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="459" column="29" selection-start-line="459" selection-start-column="29" selection-end-line="459" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/background/viewModels/imagepreviewVM.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -739,6 +708,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-60">
           <caret line="56" column="34" lean-forward="true" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/my-app.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="443" column="37" selection-start-line="443" selection-start-column="37" selection-end-line="443" selection-end-column="37" />
         </state>
       </provider>
     </entry>

@@ -442,9 +442,8 @@
             this.$.pornstars.style =  "border-left: 5px solid transparent; background-color: #333";
 
             var page = location.href;
-            if(page.indexOf("pornstar")  != -1) {
-                this.$.pornstars.style = "border-left: 5px solid #B200B7; background-color: #888";
-            }else if(page.indexOf("video")  != -1) {
+
+            if(page.indexOf("video")  != -1) {
                 this.$.videos.style = "border-left: 5px solid #B200B7; background-color: #888";
             }else if(page.indexOf("image")  != -1) {
                 this.$.images.style = "border-left: 5px solid #B200B7; background-color: #888";
@@ -458,6 +457,8 @@
                 this.$.terms.style = "border-left: 5px solid #B200B7; background-color: #888";
             }else if(page.indexOf("admin")  != -1) {
                 this.$.admins.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else {
+                this.$.pornstars.style = "border-left: 5px solid #B200B7; background-color: #888";
             }
         }
 
