@@ -25,6 +25,14 @@ var PornstarpreviewModel = (function(){
             requestHandler.putRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
         };
 
+        this.pornstarAddVideo = function(body){
+            requestHandler.postRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
+        };
+
+        this.pornstarAddImage = function(body){
+            requestHandler.postRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
+        };
+
         this.deletePornstar = function(){
             requestHandler.deleteRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp);
         };

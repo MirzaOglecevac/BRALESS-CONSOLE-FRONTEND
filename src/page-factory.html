@@ -18,10 +18,12 @@
 
       #mainContainer {
         width: 70%;
+        max-width: 800px;
         margin: 0 auto;
         padding: 10px;
         box-sizing: border-box;
       }
+
 
       #mainContainer > p {
         text-transform: uppercase;
@@ -29,15 +31,39 @@
         font-family: "sans-serif", "Roboto Mono";
       }
 
-      #mainContainer > div {
-        background-color: #333; //#B200B7;
+
+     tr {
+        background-color: #333;
         opacity: 0.84;
         padding: 10px;
         border-radius: 5px;
         margin-bottom: 15px;
         color: #fff;
-        box-shadow:  3px 4px 2px rgba(150,150,150,0.6);
+        box-shadow:  0px 4px 2px rgba(150,150,150,0.6);
         font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+     table {
+       border-collapse: collapse;
+       margin: 0 auto;
+       width: 100%;
+     }
+
+
+     tr > td {
+       padding: 5px;
+       font-family: "sans-serif", "Roboto Mono";
+     }
+
+
+      tr > td:last-child, tr > td:first-child {
+        text-align: center;
+      }
+
+
+      tr > td > p {
+        font-size: 14px;
       }
 
 
@@ -53,30 +79,25 @@
         padding: 5px;
         width: 90px;
         position: relative;
-        bottom: 4px;
       }
 
 
-      #loadVideoSpinner, #loadVideosSpinner, #loadPornstarsSpinner, #loadPornstarSpinner {
+      #loadVideoSpinner, #loadVideosSpinner, #loadPornstarsSpinner, #loadPornstarSpinner, #loadSearchSpinner {
         height: 25px;
         width: 25px;
-        position: relative;
-        left: 50px;
+        top: 4px;
         display: none;
       }
 
-      .container{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-      }
 
       .inputUrl {
         border: 1px solid #bbb;
         outline: none;
         padding: 5px;
         border-radius: 3px;
-        width: 200px;
+        min-width: 50px;
+        max-width: 300px;
+        width: 90%;
         height: 15px;
       }
 
@@ -85,15 +106,15 @@
         outline: none;
         padding: 5px;
         border-radius: 3px;
-        width: 30px;
+        width: 70px;
         height: 15px;
+        position: relative;
+        top: 3px;
       }
 
-
-      .buttonContainer {
-        width: 130px;
-        height: 50px;
-       }
+      .inputNum:first-child {
+        margin-bottom: 5px;
+      }
 
 
     </style>
@@ -105,63 +126,79 @@
 
       <p>Scraper</p>
 
-      <div id="addVideo">
-        <p> Add single video </p>
-        <div class="container">
-          <span> URL: </span>
-          <input id="videoUrl" class="inputUrl" type="text"/>
-          <span class="buttonContainer">
-             <paper-spinner id="loadVideoSpinner" active></paper-spinner>
-             <paper-button id="addVideoButton" class="button" raised on-click="_addVideo">Add</paper-button>
-        </span>
-        </div>
 
-      </div>
+      <table>
 
+        <tr id="one">
+          <td>
+            <p> Add single video </p>
+          </td>
+          <td>
+            <input id="videoUrl" class="inputUrl" placeholder="Video URL" type="text"/>
+          </td>
+          <td>
+            <paper-spinner id="loadVideoSpinner" active></paper-spinner>
+            <paper-button id="addVideoButton" class="button" raised on-click="_addVideo">Add</paper-button>
+          </td>
+        </tr>
 
-      <div id="addVideos">
-        <p> Add videos by page </p>
-        <div class="container">
-          <span> Start: </span>
-          <input id="videoStartNumber" class="inputNum" type="number"/>
-          <span> End: </span>
-          <input id="videoEndNumber" class="inputNum" type="number"/>
-          <span class="buttonContainer">
+        <tr>
+          <td>
+            <p> Add videos by page </p>
+          </td>
+          <td>
+            <input id="videoStartNumber" class="inputNum" placeholder="Start page" type="number"/>
+            <input id="videoEndNumber" class="inputNum" placeholder="End page" type="number"/>
+          </td>
+          <td>
             <paper-spinner id="loadVideosSpinner" active></paper-spinner>
             <paper-button id="addVideosButton" class="button" raised on-click="_addVideos">Add</paper-button>
-          </span>
-        </div>
-      </div>
+          </td>
+        </tr>
 
+        <tr>
+          <td>
+            <p> Add pornstar profile </p>
+          </td>
+          <td>
+            <input id="pornstarUrl" class="inputUrl" placeholder="Video URL" type="text"/>
+          </td>
+          <td>
+            <paper-spinner id="loadPornstarSpinner" active></paper-spinner>
+            <paper-button id="addPornstarButton" class="button" raised on-click="_addPornstar">Add</paper-button>
+          </td>
+        </tr>
 
-      <div id="addPornstars">
-        <p> Add pornstars by page </p>
-        <div class="container">
-          <span> Start: </span>
-          <input id="pornstarStartNumber" class="inputNum" type="number"/>
-          <span> End: </span>
-          <input id="pornstarEndNumber" class="inputNum" type="number"/>
-          <span class="buttonContainer">
+        <tr>
+          <td>
+            <p> Add pornstars by page </p>
+          </td>
+          <td>
+            <input id="pornstarStartNumber" class="inputNum" placeholder="Start page" type="number"/>
+            <input id="pornstarEndNumber" class="inputNum" placeholder="End page" type="number"/>
+          </td>
+          <td>
             <paper-spinner id="loadPornstarsSpinner" active></paper-spinner>
             <paper-button id="addPornstarsButton" class="button" raised on-click="_addPornstars">Add</paper-button>
-          </span>
-        </div>
-      </div>
+          </td>
+        </tr>
 
+        <tr>
+          <td>
+            <p> Add videos by search </p>
+          </td>
+          <td>
+            <input id="searchTerm" class="inputNum" placeholder="Search term" />
+            <input id="searchStartNumber" class="inputNum" placeholder="Start page" type="number"/>
+            <input id="searchEndNumber" class="inputNum" placeholder="End page" type="number"/>
+          </td>
+          <td>
+            <paper-spinner id="loadSearchSpinner" active></paper-spinner>
+            <paper-button id="addSearchButton" class="button" raised on-click="_addSearch">Add</paper-button>
+          </td>
+        </tr>
 
-      <div id="addPornstar">
-        <p> Add pornstar profile </p>
-        <div class="container">
-          <span> URL: </span>
-          <input id="pornstarUrl" class="inputUrl" type="text"/>
-          <span class="buttonContainer">
-             <paper-spinner id="loadPornstarSpinner" active></paper-spinner>
-             <paper-button id="addPornstarButton" class="button" raised on-click="_addPornstar">Add</paper-button>
-        </span>
-        </div>
-
-
-      </div>
+      </table>
 
 
     </div>
@@ -194,7 +231,17 @@
 
         _addVideo(){
 
-          if(!this.$.videoUrl.value || this.$.videoUrl.value.indexOf('https://www.xvideos.com') == -1){
+          this.$.addVideosButton.disabled = true;
+          this.$.addPornstarButton.disabled = true;
+          this.$.addPornstarsButton.disabled = true;
+          this.$.addSearchButton.disabled = true;
+
+            if(!this.$.videoUrl.value || this.$.videoUrl.value.indexOf('https://www.xvideos.com') == -1){
+              this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                  bubbles: true, composed: true, detail: {
+                      value: "bad-data"
+                  }
+              }));
               return;
           }
 
@@ -214,8 +261,17 @@
 
         _addVideos(){
 
+            this.$.addVideoButton.disabled = true;
+            this.$.addPornstarButton.disabled = true;
+            this.$.addPornstarsButton.disabled = true;
+            this.$.addSearchButton.disabled = true;
 
-            if(!this.$.videoEndNumber.value || (this.$.videoEndNumber.value < this.$.videoStartNumber.value)){
+            if(!this.$.videoEndNumber.value || (this.$.videoEndNumber.value <= this.$.videoStartNumber.value)){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
                 return;
             }
 
@@ -240,8 +296,17 @@
 
         _addPornstars(){
 
+            this.$.addVideoButton.disabled = true;
+            this.$.addVideosButton.disabled = true;
+            this.$.addPornstarButton.disabled = true;
+            this.$.addSearchButton.disabled = true;
 
-            if(!this.$.pornstarEndNumber.value || (this.$.pornstarEndNumber.value < this.$.pornstarStartNumber.value)){
+            if(!this.$.pornstarEndNumber.value || (this.$.pornstarEndNumber.value <= this.$.pornstarStartNumber.value)){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
                 return;
             }
 
@@ -266,7 +331,17 @@
 
         _addPornstar(){
 
+            this.$.addVideoButton.disabled = true;
+            this.$.addVideosButton.disabled = true;
+            this.$.addPornstarsButton.disabled = true;
+            this.$.addSearchButton.disabled = true;
+
             if(!this.$.pornstarUrl.value || this.$.pornstarUrl.value.indexOf('https://www.xvideos.com') == -1){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
                 return;
             }
 
@@ -281,6 +356,42 @@
             });
 
             this.addPornstar(this.$.ironAjax, body);
+        }
+
+
+        _addSearch(){
+
+            this.$.addVideoButton.disabled = true;
+            this.$.addVideosButton.disabled = true;
+            this.$.addPornstarButton.disabled = true;
+            this.$.addPornstarsButton.disabled = true;
+
+            if(!this.$.searchEndNumber.value || (this.$.searchEndNumber.value <= this.$.searchStartNumber.value) || !this.$.searchTerm.value){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
+                return;
+            }
+
+            this.$.loadSearchSpinner.style = "display: inline-block";
+            this.$.addSearchButton.style = "display: none";
+
+            if(!this.$.searchEndNumber.value){
+                this.$.searchEndNumber.value = parseInt(this.$.searchStartNumber.value) + 1;
+            }
+
+            var body = JSON.stringify({
+                "subject": "search",
+                "url": "",
+                "from": this.$.searchStartNumber.value,
+                "limit": this.$.searchEndNumber.value,
+                "term": this.$.searchTerm.value
+            });
+
+            this.addSearch(this.$.ironAjax, body);
+
         }
 
     }

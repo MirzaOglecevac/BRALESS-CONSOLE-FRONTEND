@@ -56,10 +56,17 @@
         padding: 5px;
       }
 
+      #additionalSection {
+        background-color: #333;
+        border-radius: 5px;
+        box-shadow: 3px 4px 2px rgba(150,150,150,0.5);
+      }
+
 
       table .left {
         width: 160px;
-        color: #333;
+        color: #fff;
+        padding: 10px;
         opacity: 0.84;
       }
 
@@ -67,15 +74,47 @@
         outline: none;
         border: none;
         background-color: #fff;
-        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
         padding: 5px;
         font-family: "sans-serif", "Roboto Mono";
         font-size: 15px;
         color: #333;
-        width: 200px;
+        min-width: 50px;
+        max-width: 200px;
+        width: 90%;
         border-radius: 5px;
         text-indent: 5px;
       }
+
+      table .inputElementLong {
+        outline: none;
+        border: none;
+        background-color: #fff;
+        //box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+        padding: 5px;
+        font-family: "sans-serif", "Roboto Mono";
+        font-size: 15px;
+        color: #333;
+        min-width: 50px;
+        //max-width: 200px;
+        width: 90%;
+
+        border-radius: 5px;
+        text-indent: 5px;
+      }
+
+
+      /* Media queries */
+
+      @media only screen and (max-width: 800px) {
+
+        table .inputElementLong {
+          max-width: 200px;
+
+        }
+
+      }
+
+
 
 
       table .image {
@@ -84,7 +123,7 @@
 
 
 
-      #additionalInfo {
+      #additionalInfo, #imageInfo, #videoInfo {
         color: #333;
         opacity: 0.84;
         font-size: 16px;
@@ -101,11 +140,13 @@
       textarea {
         outline: none;
         border: none;
-        width: 300px;
+        min-width: 50px;
+        max-width: 300px;
+        width: 90%;
         height: 100px;
         border-radius: 5px;
         background-color: #fff;
-        box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
+       // box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
         resize: none;
         padding: 5px 5px 5px 10px;
         text-indent: 5px;
@@ -144,6 +185,13 @@
       }
 
 
+      #addImage, #addVideo {
+        background-color: #B200B7;
+        color: #fff;
+        float: right;
+      }
+
+
       #deleteButton {
         background-color: #f73722;
         color: #fff;
@@ -156,15 +204,14 @@
       #hiddenImage {
         position: fixed;
         z-index: 1000;
-        right: 10vh;
-        bottom: 27vh;
+        right: 5vh;
+        bottom: 47vh;
         width: 250px;
         height: 180px;
         border: 5px solid #B200B7;
         border-radius: 5px;
         display: none;
       }
-
 
 
       .mainContainerInfo {
@@ -179,7 +226,7 @@
 
 
       .text {
-        color: #eee;
+        color: #fff;
         font-size: 20px;
         padding: 10px;
         width: 50%;
@@ -216,12 +263,12 @@
         bottom: 33px;
       }
 
+
       /* Loader */
 
       #loaderContainer {
         width: 100%;
         height: 100%;
-
       }
 
 
@@ -232,6 +279,25 @@
         width: 70px;
         height: 70px;
       }
+
+
+      .section {
+        background-color: transparent;
+        color: #fff;
+      }
+
+      .adds {
+        color: #fff !important;
+        border-radius: 5px;
+        background-color: #333;
+      }
+
+
+
+      table.adds tr:last-child td:last-child, table.adds tr:last-child td:first-child {
+        width: 100px;
+      }
+
 
     </style>
 
@@ -269,7 +335,6 @@
 
       <br/>
 
-      <!-- <pornstar-info-box></pornstar-info-box> -->
       <div id="infoBox">
         <img src$="{{_checkImage(pornstarData.profile_image)}}">
         <span> {{pornstarData.name}} </span>
@@ -286,7 +351,18 @@
           </div>
 
           <div class="number">
-            <span class="numberBottom"> {{pornstarData.num_of_videos}} </span>
+            <span class="numberBottom"> {{_calculateNumbers(pornstarData.num_of_videos)}} </span>
+          </div>
+        </div>
+
+
+        <div class="mainContainerInfo">
+          <div class="text">
+            Images
+          </div>
+
+          <div class="number">
+            <span class="numberBottom"> {{_calculateNumbers(pornstarData.num_of_images)}} </span>
           </div>
         </div>
 
@@ -296,7 +372,7 @@
           </div>
 
           <div class="number">
-            <span class="numberBottom"> {{pornstarData.profile_views}} </span>
+            <span class="numberBottom"> {{_calculateNumbers(pornstarData.profile_views)}} </span>
           </div>
         </div>
 
@@ -306,9 +382,12 @@
           </div>
 
           <div class="number">
-            <span class="numberBottom"> {{pornstarData.subscribers}} </span>
+            <span class="numberBottom"> {{_calculateNumbers(pornstarData.subscribers)}} </span>
           </div>
         </div>
+
+
+
 
 
       </div>
@@ -317,7 +396,9 @@
 
       <p id="additionalInfo">Additional info: </p>
 
-      <table>
+    <div id="additionalSection">
+
+      <table class="section">
         <tr>
           <td class="left"> Name: </td>
           <td>
@@ -356,31 +437,65 @@
         <tr>
           <td class="left image"> Profile image: </td>
           <td>
-            <input id="profileImage" class="inputElement image"  on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.profile_image}}"  disabled/>
+            <input id="profileImage" class="inputElementLong image"  on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.profile_image}}"  disabled/>
           </td>
         </tr>
 
         <tr>
           <td class="left"> Banner image: </td>
           <td>
-            <input id="bannerImage" class="inputElement image" on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.banner_image}}"  disabled/>
+            <input id="bannerImage" class="inputElementLong image" on-mouseover="_getImageUrl" on-mouseout="_hideImage" value="{{pornstarData.banner_image}}"  disabled/>
           </td>
         </tr>
 
       </table>
 
-
+    </div>
       <br/>
 
       <div id="buttonsContainer">
         <paper-button id="editButton" raised on-click="_editPornstar">Edit</paper-button>
         <paper-button id="saveButton" raised on-click="_savePornstar">Save</paper-button>
-
         <paper-button id="deleteButton" raised on-click="_deletePornstar">Delete</paper-button>
       </div>
 
+
+      <br/><br/>
+
+      <p id="imageInfo">Add pornstar image: </p>
+
+
+      <table class="section adds">
+        <tr>
+          <td>Image URL: </td>
+          <td>
+            <input id="pornstarImage" class="inputElementLong"/>
+          </td>
+          <td>
+            <paper-button id="addImage" raised on-click="_addImage">Add</paper-button>
+          </td>
+        </tr>
+      </table>
+
+
       <br/>
 
+      <p id="videoInfo">Add pornstar video: </p>
+
+
+      <table class="section adds">
+        <tr>
+          <td> Video URL: </td>
+          <td>
+            <input id="pornstarVideo" class="inputElementLong"/>
+          </td>
+          <td>
+            <paper-button id="addVideo" raised on-click="_addVideo">Add</paper-button>
+          </td>
+        </tr>
+      </table>
+
+      <br/>
 
     </div>
 
@@ -430,12 +545,29 @@
 
 
         _actionUpdated(){
-            console.log(this.action);
+            console.log("Demo: " + this.action);
 
-            if(this.action == "pornstar"){
+            if(this.action > 7 && this.action < 8){
                 this._deletePornstarConfirmed();
             }
 
+        }
+
+
+        _calculateNumbers(num){
+
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+            }
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            }
+            if(num < 1000){
+                return num;
+            }
         }
 
 
@@ -448,6 +580,52 @@
         }
 
 
+        _addVideo(){
+
+            if(!this.$.pornstarVideo.value || this.$.pornstarVideo.value.indexOf('https://www.xvideos.com') == -1){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
+                return;
+            }
+
+
+            var body = JSON.stringify({
+                "subject": "video",
+                "url": this.$.pornstarVideo.value,
+                "from": 0,
+                "limit": 0,
+                "pornstar_id": this.id
+            });
+
+            this.pornstarAddVideo(this.$.ironAjax, body);
+        }
+
+
+        _addImage(){
+
+            if(!this.$.pornstarImage.value || this.$.pornstarImage.value.indexOf('http') == -1){
+                this.dispatchEvent(new CustomEvent('bad-scrap-data', {
+                    bubbles: true, composed: true, detail: {
+                        value: "bad-data"
+                    }
+                }));
+                return;
+            }
+
+
+            var body = JSON.stringify({
+                "image_url": this.$.pornstarImage.value,
+                "pornstar_id": this.id
+            });
+
+            console.log(body);
+
+            this.pornstarAddImage(this.$.ironAjax, body);
+        }
+
         _hideImage(){
             this.$.hiddenImage.style="display: none";
         }
@@ -457,7 +635,7 @@
             if(img){
                 return img;
             }else {
-                return "../images/pornstar_placeholder.jpg";
+                return "../images/pornstar_placeholder.png";
             }
         }
 
@@ -504,7 +682,8 @@
 
             this.dispatchEvent(new CustomEvent('delete-pornstar', {
                 bubbles: true, composed: true, detail: {
-                    type: "confirm"
+                    type: "confirm",
+                    value: "pornstar"
                 }
             }));
 

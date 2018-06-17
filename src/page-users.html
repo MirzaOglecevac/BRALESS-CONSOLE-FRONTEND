@@ -41,11 +41,31 @@
 
 
       #usersContainer {
-        width: 100%;
+        width: 500px;
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box;
-        box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
+      }
+
+
+      #templateContainer {
+        width: 500px;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        box-shadow: 14px 3px 1px rgba(150,150,150,0.5);
+      }
+
+
+      /* Media queries */
+
+      @media only screen and (max-width: 900px) {
+
+
+        #templateContainer {
+           width: 350px;
+        }
+
       }
 
 
@@ -113,6 +133,58 @@
       }
 
 
+      #infoHeading {
+        border-collapse: collapse;
+        color: #333;
+        opacity: 0.84;
+        font-family: "sans-serif", "Roboto Mono";
+      }
+
+
+      #infoHeading tr td:first-child {
+        width: 50px;
+        text-align: center;
+      }
+
+      #infoHeading tr td:nth-child(4) {
+        width: 30%;
+        text-align: left;
+      }
+
+      #infoHeading tr td:nth-child(2), #infoHeading tr td:nth-child(3){
+        width: 30%;
+        text-align: center;
+      }
+
+
+
+
+
+      /* Media queries */
+
+      @media only screen and (max-width: 900px) {
+
+        #usersContainer {
+          width: 100%;
+        }
+
+        #infoHeading tr td:nth-child(4) {
+          display: none;
+        }
+
+        #infoHeading tr td:nth-child(3) {
+          width: 150px;
+          text-align: center;
+        }
+
+        #infoHeading tr td:nth-child(2) {
+          width: 100px;
+          text-align: center;
+        }
+
+      }
+
+
 
     </style>
 
@@ -143,9 +215,23 @@
 
 
       <div id="usersContainer">
-        <template id="userList" is="dom-repeat" items="[[users]]" as="user">
-          <user-card entry="[[user]]"></user-card>
-        </template>
+
+        <table id="infoHeading">
+          <tr>
+            <td></td>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Registered</td>
+          </tr>
+        </table>
+
+
+        <div id="templateContainer">
+          <template id="userList" is="dom-repeat" items="[[users]]" as="user">
+            <user-card entry="[[user]]"></user-card>
+          </template>
+        </div>
+
       </div>
 
       <br/>
@@ -209,7 +295,7 @@
 
         _actionUpdated(){
 
-            if(this.action == "user"){
+            if(this.action > 5 && this.action < 6){
                 this._delete();
             }
 
@@ -236,7 +322,8 @@
         _getBackFromSearch(){
             this.from = 0;
             this.limit = 20;
-            this.videos = [];
+            this.users = [];
+            this.$.infoHeading.style="display: block";
             this.getUsers(this.$.ironAjax, this.from, this.limit);
             this.$.backToMain.style = "display: none;";
             this.$.usersContainer.style="display: none";

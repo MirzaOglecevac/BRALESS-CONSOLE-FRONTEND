@@ -106,11 +106,15 @@
 
             _checkTitle(title){
 
-                if(title.length > 30){
-                    title = title.substring(0,30) + '...';
+                if(title){
+                    if(title.length > 30){
+                        title = title.substring(0,30) + '...';
+                    }
+                    return title;
+                }else {
+                    return;
                 }
 
-                return title;
             }
 
 

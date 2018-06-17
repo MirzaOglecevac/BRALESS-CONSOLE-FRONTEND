@@ -177,7 +177,7 @@
                 },
                 limit: {
                     type: Number,
-                    value: 2
+                    value: 20
                 },
                 searchValue: {
                     type: String,
@@ -223,7 +223,7 @@
 
         _getBackFromSearch(){
             this.from = 0;
-            this.limit = 2;
+            this.limit = 20;
             this.images = [];
             this.getImages(this.$.ironAjax, this.from, this.limit);
             this.$.backToMain.style = "display: none;";

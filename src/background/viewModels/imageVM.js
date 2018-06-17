@@ -41,11 +41,11 @@ ImageVM = function(superClass,ImageModel,Configuration) {
             if(e.detail.kind == 'image'){
                 var data = this.images;
                 this.images = data.concat(e.detail.response.data);
-                this.from += 2;
+                this.from += 20;
                 this.$.loaderContainer.style="display: none";
                 this.$.imagesContainer.style="display: flex";
 
-                if(e.detail.response.data.length < 2){
+                if(e.detail.response.data.length < 20){
                     this.$.loadMore.style="display: none";
                 }
             }else if(e.detail.kind == 'search-image'){

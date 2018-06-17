@@ -94,8 +94,6 @@
 
              </div>
 
-
-
         </div>
 
     </template>
@@ -143,6 +141,7 @@
                     this.$.name.value = "";
                     this.$.email.value = "";
                     this.$.image.value = "";
+                    this.$.password.value="";
                     this.$.password.style="display: block";
                     this.$.heading.innerHTML = "Add admin";
                     this.action = "add-admin";
@@ -158,6 +157,7 @@
 
 
             _procede() {
+                console.log("procede...");
                 var name = this.$.name.value;
                 var password = this.$.password.value;
                 var email = this.$.email.value;
@@ -171,6 +171,7 @@
                 }
 
                 if(this.action == "add-admin"){
+                    console.log("dispatching add");
                     this.dispatchEvent(new CustomEvent('make-action', {
                         bubbles: true, composed: true, detail: {
                             value: this.action,

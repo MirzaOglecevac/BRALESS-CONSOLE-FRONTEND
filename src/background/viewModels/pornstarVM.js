@@ -55,6 +55,12 @@ PornstarVM = function(superClass, PornstarModel, Configuration) {
                 this.$.loaderContainer.style="display: none";
                 this.$.pornstarsContainer.style="display: block";
 
+                if(this.pornstars.length  == 0){
+                    this.$.infoHeading.style="display: none";
+                }else {
+                    this.$.infoHeading.style="display: table";
+                }
+
             }
 
 

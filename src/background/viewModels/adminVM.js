@@ -67,6 +67,7 @@ AdminVM = function(superClass,AdminModel,Configuration) {
             }else if(e.detail.kind == "admin-delete"){
                 this._getAdmins();
             }else if(e.detail.kind == "add-admin"){
+                console.log(e);
                 this._getAdmins();
             }else if(e.detail.kind == "update-admin"){
                 this._getAdmins();

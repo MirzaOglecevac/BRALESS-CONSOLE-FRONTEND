@@ -45,7 +45,10 @@
 
             #pornstarCard > div:first-child  {  /*, #pornstarCard > div:last-child{ */
                 width: 10%;
+
             }
+
+
 
 
             #pornstarCard > div:nth-child(2), #pornstarCard > div:nth-child(4){
@@ -68,6 +71,7 @@
                 display: inline-block;
                 color: #333;
                 padding: 5px;
+                word-break: normal;
             }
 
 
@@ -94,6 +98,27 @@
             }
 
 
+            /* Media queries */
+
+            @media only screen and (max-width: 800px) {
+
+                #country, #countryContainer {
+                    display: none;
+                }
+
+                #nameContainer {
+                    position: relative;
+                    left: 50px;
+                }
+
+                #pornstarCard > div:nth-child(2){
+                    width: 60%;
+                }
+
+            }
+
+
+
         </style>
 
         <div id="pornstarCard" on-click="_redirectToPornstarPreviewPage">
@@ -101,16 +126,16 @@
                 <img src$="{{_checkImage(entry.profile_image)}}" />
             </div>
 
-            <div>
+            <div id="nameContainer">
                 <span id="name"> {{entry.name}} </span>
             </div>
 
-            <div>
+            <div id="countryContainer">
                 <span id="country"> {{entry.country}} </span>
             </div>
 
             <div>
-                <span id="subscribers"> {{entry.default_subscribers}} </span>
+                <span id="subscribers"> {{_calculateNumbers(entry.default_subscribers)}} </span>
             </div>
 
             <!-- <div id="icons">
@@ -135,7 +160,24 @@
                 if(image){
                     return image;
                 }else {
-                    return '../../images/pornstar_placeholder.jpg';
+                    return '../../images/pornstar_placeholder.png';
+                }
+            }
+
+
+            _calculateNumbers(num){
+
+                if (num >= 1000000000) {
+                    return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+                }
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+                }
+                if(num < 1000){
+                    return num;
                 }
             }
 

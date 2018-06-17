@@ -33,6 +33,10 @@ var FactoryModel = (function(){
             requestHandler.postRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
         };
 
+        this._addSearch = function(body){
+            requestHandler.postRequest(main.url+main.endpoint, main.request, main.coreAjax, main.thisApp, body);
+        };
+
     }
 
     return new factoryModel(RequestHandler);

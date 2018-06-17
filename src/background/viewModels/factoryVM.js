@@ -45,10 +45,21 @@ FactoryVM = function(superClass,FactoryModel,Configuration) {
             var endpoint = '/';
             var request = 'add-pornstar';
             var coreAjax = ironRequest;
-console.log(body);
+
             // setup iron request
             FactoryModel.requestIron(url,endpoint,request,coreAjax,this);
             FactoryModel._addPornstar(body);
+        }
+
+        addSearch(ironRequest, body) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/';
+            var request = 'add-search';
+            var coreAjax = ironRequest;
+console.log(body);
+            // setup iron request
+            FactoryModel.requestIron(url,endpoint,request,coreAjax,this);
+            FactoryModel._addSearch(body);
         }
 
 
@@ -61,22 +72,47 @@ console.log(body);
         _requestResponse(e) {
 
             if(e.detail.kind == "add-video"){
-                console.log(e.detail);
                 this.$.loadVideoSpinner.style = "display: none";
                 this.$.addVideoButton.style = "display: inline-block";
+                this.$.addVideosButton.disabled = false;
+                this.$.addPornstarButton.disabled = false;
+                this.$.addPornstarsButton.disabled = false;
+                this.$.addSearchButton.disabled = false;
             }else if(e.detail.kind == "add-videos"){
-                console.log(e.detail);
                 this.$.loadVideosSpinner.style = "display: none";
                 this.$.addVideosButton.style = "display: inline-block";
+                this.$.addVideoButton.disabled = false;
+                this.$.addPornstarButton.disabled = false;
+                this.$.addPornstarsButton.disabled = false;
+                this.$.addSearchButton.disabled = false;
             }else if(e.detail.kind == "add-pornstars"){
-                console.log(e.detail);
                 this.$.loadPornstarsSpinner.style = "display: none";
                 this.$.addPornstarsButton.style = "display: inline-block";
+                this.$.addVideoButton.disabled = false;
+                this.$.addVideosButton.disabled = false;
+                this.$.addPornstarButton.disabled = false;
+                this.$.addSearchButton.disabled = false;
             }else if(e.detail.kind == "add-pornstar"){
-                console.log(e.detail);
                 this.$.loadPornstarSpinner.style = "display: none";
                 this.$.addPornstarButton.style = "display: inline-block";
+                this.$.addVideoButton.disabled = false;
+                this.$.addVideosButton.disabled = false;
+                this.$.addPornstarsButton.disabled = false;
+                this.$.addSearchButton.disabled = false;
+            }else if(e.detail.kind == "add-search"){
+                this.$.loadSearchSpinner.style = "display: none";
+                this.$.addSearchButton.style = "display: inline-block";
+                this.$.addVideoButton.disabled = false;
+                this.$.addVideosButton.disabled = false;
+                this.$.addPornstarsButton.disabled = false;
+                this.$.addPornstarButton.disabled = false;
             }
+
+            this.dispatchEvent(new CustomEvent('scrap-ended', {
+                bubbles: true, composed: true, detail: {
+                    value: "scrap"
+                }
+            }));
 
         }
     }

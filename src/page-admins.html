@@ -19,9 +19,9 @@
 
 
       #mainContainer {
-        width: 70%;
+        width: 500px;
         margin: 0 auto;
-        padding: 0;
+        padding: 5px 15px;
       }
 
 
@@ -33,20 +33,20 @@
       }
 
 
-      #container {
-        width: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box;
-        box-shadow: 2px 3px 1px rgba(150,150,150,0.5);
-      }
-
 
       paper-fab {
         background-color: #B200B7;
         position: fixed;
         bottom: 30px;
         right: 30px;
+      }
+
+      /* Media queries */
+
+      @media only screen and (max-width: 800px) {
+
+
+
       }
 
 
@@ -58,14 +58,9 @@
     <div id="mainContainer">
       <p>Admins info</p>
 
-      <div id="container">
-
         <template id="adminList" is="dom-repeat" items="[[admins]]" as="admin">
           <admin-card entry="[[admin]]"></admin-card>
         </template>
-
-
-      </div>
 
 
       <paper-fab id="fab" icon="add" on-click="_addAdmin"></paper-fab>
@@ -94,8 +89,7 @@
                 ,
                 data: {
                   type: Object,
-                    value: this.data,
-                    observer: '_dialogDataChanged'
+                    value: this.data
                 }
             };
         }
@@ -115,7 +109,6 @@
         }
 
 
-
         _adminDataChanged(){
             this.$.adminList.render();
         }
@@ -123,11 +116,12 @@
 
         _actionUpdated(){
 
-            if(this.action == "add-admin"){
+
+            if(this.action > 4 && this.action < 5){
                 this._addAdminConfirmed();
-            }else if(this.action == "admin"){
+            }else if(this.action > 2 && this.action < 3){
                 this._delete();
-            }else if(this.action == "update-admin"){
+            }else if(this.action > 3 && this.action < 4){
                 this._updateAdmin();
             }
 
@@ -151,6 +145,8 @@
                 "image": this.data.image
             });
 
+            console.log(body);
+
             this.updateAdmin(this.$.ironAjax, body);
         }
 
@@ -163,6 +159,8 @@
               "email": this.data.email,
               "image": this.data.image
           });
+
+          console.log(body);
             this.addAdmin(this.$.ironAjax, body);
         }
 

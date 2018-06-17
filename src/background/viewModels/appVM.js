@@ -33,8 +33,8 @@ AppVM = function(superClass,AppModel,Configuration) {
                 if(e.detail.response){
                     this.username = e.detail.response.username;
                     this.userImage = e.detail.response.profile_image;
-                    sessionStorage.setItem("logged in", true);
-                    sessionStorage.setItem("image", this.userImage);
+                    localStorage.setItem("logged in", true);
+                    localStorage.setItem("image", this.userImage);
                     this.$.loginScreen.style="display: none;";
                 }else {
                     this.$.username.value = "Incorrect password or username";

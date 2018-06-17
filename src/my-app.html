@@ -62,7 +62,6 @@
       :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
-
         display: block;
       }
 
@@ -91,7 +90,7 @@
 
       app-toolbar #menuIcon {
         position:relative;
-        top:10px;
+        top:-11px;
       }
 
 
@@ -123,13 +122,13 @@
       }
 
       .drawer-list a:hover {
-        background-color: #888;
-        border-left: 5px solid #B200B7;
+        background-color: #888 !important;
+        border-left: 5px solid #B200B7 !important;
       }
 
-
-      #menuIcon {
-
+      .drawer-list a:first-child {
+        background-color: #888;
+        border-left: 5px solid #B200B7;
       }
 
 
@@ -188,7 +187,7 @@
         margin-left: -160px;
         padding: 8px;
         outline: none;
-        border-radius: 2px;
+        border-radius: 4px;
         box-shadow: 1px 2px 1px rgba(150,150,150,0.5);
         font-family: "sans-serif", "Roboto Mono";
         font-size: 15px;
@@ -285,14 +284,14 @@
           <img id="logoImage" src="../images/braless-logo-white.png" />
         </app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a id="admins" name="page-admins" href="[[rootPath]]admins" on-click="_styleClickedMenuItem">Admins</a>
-          <a id="users" name="page-users" href="[[rootPath]]users" on-click="_styleClickedMenuItem">Users</a>
           <a id="pornstars" name="page-pornstars" href="[[rootPath]]pornstars" on-click="_styleClickedMenuItem">Pornstars</a>
           <a id="videos" name="page-videos" href="[[rootPath]]videos" on-click="_styleClickedMenuItem">Videos</a>
           <a id="images" name="page-images" href="[[rootPath]]images" on-click="_styleClickedMenuItem">images</a>
-          <a id="statistic" name="page-statistic" href="[[rootPath]]statistic" on-click="_styleClickedMenuItem">Statistic</a>
-          <a id="terms" name="page-terms" href="[[rootPath]]terms" on-click="_styleClickedMenuItem">Terms and conditions</a>
+          <a id="users" name="page-users" href="[[rootPath]]users" on-click="_styleClickedMenuItem">Users</a>
           <a id="factory" name="page-factory" href="[[rootPath]]factory" on-click="_styleClickedMenuItem">Scraper</a>
+          <a id="statistic" name="page-statistic" href="[[rootPath]]statistic" on-click="_styleClickedMenuItem">Statistic</a>
+          <a id="admins" name="page-admins" href="[[rootPath]]admins" on-click="_styleClickedMenuItem">Admins</a>
+          <a id="terms" name="page-terms" href="[[rootPath]]terms" on-click="_styleClickedMenuItem">Terms and conditions</a>
         </iron-selector>
       </app-drawer>
 
@@ -320,17 +319,18 @@
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <page-admins name="admins" action="[[actionEnded]]" data="[[dialogData]]" adminscope="[[scope]]"></page-admins>
-          <page-users name="users" action="[[actionEnded]]" data="[[dialogData]]"></page-users>
+
           <page-pornstars name="pornstars"></page-pornstars>
           <page-pornstarpreview name="pornstarpreview" action="[[actionEnded]]"></page-pornstarpreview>
           <page-videos name="videos"></page-videos>
           <page-videopreview name="videopreview" action="[[actionEnded]]"></page-videopreview>
           <page-images name="images"></page-images>
           <page-imagepreview name="imagepreview" action="[[actionEnded]]"></page-imagepreview>
-          <page-statistic name="statistic"></page-statistic>
-          <page-terms name="terms"></page-terms>
+          <page-users name="users" action="[[actionEnded]]" data="[[dialogData]]"></page-users>
           <page-factory name="factory"></page-factory>
+          <page-statistic name="statistic"></page-statistic>
+          <page-admins name="admins" action="[[actionEnded]]" data="[[dialogData]]" adminscope="[[scope]]"></page-admins>
+          <page-terms name="terms"></page-terms>
           <page-404 name="404"></page-404>
         </iron-pages>
       </app-header-layout>
@@ -345,7 +345,7 @@
         </div>
 
         <div id="loginInput">
-          <input id="username" on-input="_checkTextColor" on-keydown="_ifEnter"/>
+          <input id="username" on-click="_deleteText" on-input="_checkTextColor" on-keydown="_ifEnter"/>
           <br/>
           <input id="password" type="password" on-keydown="_ifEnter"/>
         </div>
@@ -388,14 +388,14 @@
           rootPath: String,
           menuItems: {
               type: Array,
-              value: ['admins', 'users', 'pornstars', 'videos', 'images', 'statistic', 'terms']
+              value: ['admins', 'users', 'pornstars', 'videos', 'images', 'statistic', 'terms', 'factory']
           },
             username: {
               type: String
             },
             userImage: {
               type: String,
-                value: sessionStorage.getItem("image")
+                value: localStorage.getItem("image")
             },
             actionEnded: {
                 type: String,
@@ -424,7 +424,7 @@
       ready(){
           super.ready();
 
-            if(sessionStorage.getItem("logged in") == "true"){
+            if(localStorage.getItem("logged in") == "true"){
                 this.$.loginScreen.style = "display: none;"
             }else {
                 this.$.loginScreen.style = "display: block;"
@@ -432,7 +432,35 @@
 
             this._checkEvents();
 
+            this._checkMenuItemToStyle();
+
         }
+
+
+        _checkMenuItemToStyle(){
+
+            this.$.pornstars.style =  "border-left: 5px solid transparent; background-color: #333";
+
+            var page = location.href;
+            if(page.indexOf("pornstar")  != -1) {
+                this.$.pornstars.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("video")  != -1) {
+                this.$.videos.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("image")  != -1) {
+                this.$.images.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("users")  != -1) {
+                this.$.users.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("factory")  != -1) {
+                this.$.factory.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("statistic")  != -1) {
+                this.$.statistic.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("terms")  != -1) {
+                this.$.terms.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }else if(page.indexOf("admin")  != -1) {
+                this.$.admins.style = "border-left: 5px solid #B200B7; background-color: #888";
+            }
+        }
+
 
 
         _checkEvents(){
@@ -459,17 +487,31 @@
 
             this.addEventListener('update-admin', (e) => this._checkDialog(e));
 
-
             this.addEventListener('delete-user', (e) => this._checkDialog(e));
+
+            this.addEventListener('scrap-ended', (e) => this._openToast(e));
+
+            this.addEventListener('bad-scrap-data', (e) => this._openToast(e));
 
         }
 
 
         _openToast(e){
+
+          if(e.detail){
+              if(e.detail.value == "scrap"){
+                  this.$.toast.text = "Scrapping finished";
+              }if(e.detail.value == "bad-data"){
+                  this.$.toast.text = "Please check entered data";
+              }
+          }
+
             this.$.toast.open();
         }
 
         _checkDialog(e){
+
+          console.log(e);
 
           if(e.detail.type == "confirm"){
               if(e.detail.id){
@@ -502,20 +544,36 @@
         _sendConfirmationBack(e){
 
           var action = e.detail.value;
+
           if(action == "add-admin"){
               this.dialogData = e.detail;
+              this.actionEnded = Math.random() + 4;
           }else if(action == "admin"){
               this.dialogData = e.detail;
               this.dialogData.id = this.adminToDelete;
+              this.actionEnded = Math.random() + 2;
           }else if(action == "user"){
               this.dialogData = e.detail;
               this.dialogData.id = this.adminToDelete;
+              this.actionEnded = Math.random() + 5;
           }else if(action == "update-admin"){
               this.dialogData = e.detail;
               this.trigger = Math.random();
+              this.actionEnded = Math.random() + 3;
+          }else if(action == "video"){
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
+              this.actionEnded = Math.random() + 6;
+          }else if(action == "pornstar"){
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
+              this.actionEnded = Math.random() + 7;
+          }else if(action == "image"){
+              this.dialogData = e.detail;
+              this.trigger = Math.random();
+              this.actionEnded = Math.random() + 8;
           }
 
-          this.actionEnded = action;
           this._closeDialog();
 
         }
@@ -526,15 +584,88 @@
 
           var clickedId = event.target.id;
 
+             if(clickedId === 'pornstars'){
+                 this.$.pornstars.style = "border-left: 5px solid #B200B7; background-color: #888";
 
-//          for(var i = 0; i < this.menuItems.length; i++){
-//              //console.log(this.menuItems[i]);
-//              if(clickedId === this.menuItems[i]){
-//                  this.$.admins.style = "border-left: 10px solid green;";
-//              }else {
-//                  this.$.menuItems[i].style = "border-right: 10px solid green;";
-//              }
-//          }
+                 this.$.factory.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.images.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style =  "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'videos'){
+                 this.$.videos.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.factory.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.images.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style =  "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'images'){
+                 this.$.images.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.factory.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style =  "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style =  "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'users'){
+                 this.$.users.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.factory.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.images.style = "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'factory'){
+                 this.$.factory.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.images.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style = "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'statistic'){
+                 this.$.statistic.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.images.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.factory.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style = "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'admins'){
+                 this.$.admins.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.images.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.factory.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.terms.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style = "border-left: 5px solid transparent; background-color: #333";
+             }else if (clickedId === 'terms'){
+                 this.$.terms.style = "border-left: 5px solid #B200B7; background-color: #888";
+
+                 this.$.images.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.admins.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.videos.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.pornstars.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.statistic.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.factory.style = "border-left: 5px solid transparent; background-color: #333";
+                 this.$.users.style = "border-left: 5px solid transparent; background-color: #333";
+             }
+
 
       }
 
@@ -545,6 +676,14 @@
           }
         }
 
+
+        _deleteText(){
+
+          if(this.$.username.value == "Incorrect password or username"){
+              this.$.username.value = "";
+              this.$.username.style = "color: #333";
+          }
+        }
 
 
         _checkIfAdminIsValid(){
@@ -559,7 +698,8 @@
 
 
         _logout(){
-          sessionStorage.removeItem("logged in");
+          localStorage.removeItem("logged in");
+          localStorage.removeItem("image");
           location.href = "/";
         }
 
@@ -574,7 +714,7 @@
       _routePageChanged(page) {
         // If no page was found in the route data, page will be an empty string.
         // Default to 'view1' in that case.
-        this.page = page || 'admins';
+        this.page = page || 'pornstars';
 
         // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {

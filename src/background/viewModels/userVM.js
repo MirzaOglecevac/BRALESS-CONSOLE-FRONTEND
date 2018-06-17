@@ -68,6 +68,12 @@ UserVM = function(superClass,UserModel,Configuration) {
                 this.$.loaderContainer.style="display: none";
                 this.$.usersContainer.style="display: block";
 
+                if(this.users.length  == 0){
+                    this.$.infoHeading.style="display: none";
+                }else {
+                    this.$.infoHeading.style="display: table";
+                }
+
             }else if(e.detail.kind == 'user-delete'){
                 this.users = [];
                 this.from = 0;

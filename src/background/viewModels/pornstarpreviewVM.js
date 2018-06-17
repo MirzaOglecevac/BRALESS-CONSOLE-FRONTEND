@@ -42,6 +42,29 @@ PornstarpreviewVM = function(superClass, PornstarpreviewModel, Configuration) {
         }
 
 
+        pornstarAddVideo(ironRequest, body) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/';
+            var request = 'pornstar-add-video';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            PornstarpreviewModel.requestIron(url,endpoint,request,coreAjax,this);
+            PornstarpreviewModel.pornstarAddVideo(body);
+        }
+
+        pornstarAddImage(ironRequest, body) {
+            var url = Configuration.configuration()[0].baseUrl;
+            var endpoint = '/image/data';
+            var request = 'pornstar-add-image';
+            var coreAjax = ironRequest;
+
+            // setup iron request
+            PornstarpreviewModel.requestIron(url,endpoint,request,coreAjax,this);
+            PornstarpreviewModel.pornstarAddImage(body);
+        }
+
+
 
         ready(){
             super.ready();
@@ -61,9 +84,19 @@ PornstarpreviewVM = function(superClass, PornstarpreviewModel, Configuration) {
                 this.$.loaderContainer.style="display: block";
                 this.$.mainContainer.style="display: none";
                 this.getPornstarData(this.$.ironAjax, this.id);
-
+            }else if(e.detail.kind == 'pornstar-add-video'){
+                this.dispatchEvent(new CustomEvent('scrap-ended', {
+                    bubbles: true, composed: true, detail: {
+                        value: "scrap"
+                    }
+                }));
+            }else if(e.detail.kind == 'pornstar-add-image'){
+                this.dispatchEvent(new CustomEvent('scrap-ended', {
+                    bubbles: true, composed: true, detail: {
+                        value: "scrap"
+                    }
+                }));
             }
-
 
         }
 

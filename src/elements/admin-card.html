@@ -7,13 +7,8 @@
         <style include="shared-styles">
 
             #adminCard {
-                display: flex;
-                flex-direction: row;
-                min-width: 320px;
                 background-color: #fff;
-                width: 100%;
-                margin: 0;
-                padding: 0;
+                margin-left: 15px;
                 font-family: "sans-serif", "Roboto";
                 padding: 9px 5px 0 5px;
                 border-bottom: 1px solid rgba(100,100,100, 0.4);
@@ -42,26 +37,6 @@
             }
 
 
-            #adminCard > div:first-child, #adminCard > div:last-child{
-                width: 10%;
-            }
-
-
-            #adminCard > div:nth-child(2) {
-                width: 20%;
-            }
-
-
-            #adminCard > div:nth-child(3){
-                width: 60%;
-            }
-
-            #adminCard span, #adminCard iron-icon {
-                position: relative;
-                top: 5px;
-            }
-
-
             #name {
                 display: inline-block;
                 color: #333;
@@ -82,31 +57,68 @@
                 --iron-icon-height: 20px;
                 --iron-icon-fill-color: #555;
                 cursor: pointer;
+                position: relative;
+                top: 10px;
             }
 
 
+            #icons {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                min-width: 50px;
+            }
+
+
+            .td:first-child, .td:last-child {
+                min-width: 50px;
+            }
+
+
+            .td:nth-child(2){
+                min-width: 100px;
+                text-align: center;
+                position: relative;
+                bottom: 4px;
+            }
+
+            .td:nth-child(3){
+                min-width: 230px;
+                text-align: center;
+                position: relative;
+                bottom: 4px;
+            }
+
+            /* Media queries */
+
+            @media only screen and (max-width: 800px) {
+
+                .td:nth-child(2){
+                    display: none;
+                }
+
+            }
+
         </style>
 
-        <div id="adminCard">
-            <div>
-                <img id="image" src$="{{_checkImage(entry.image)}}" />
-            </div>
 
-            <div>
-                <span id="name"> {{entry.name}} </span>
-            </div>
-
-            <div>
-                <span id="email"> {{entry.email}}</span>
-            </div>
-
-
-
-            <div id="icons">
-                <iron-icon icon="create" on-click="_updateAdmin"></iron-icon>
-                <iron-icon icon="delete" on-click="_deleteAdmin"></iron-icon>
-            </div>
-        </div>
+        <table id="adminCard">
+            <tr>
+                <td class="td">
+                    <img id="image" src$="{{_checkImage(entry.image)}}" />
+                </td>
+                <td class="td">
+                    <span id="name"> {{entry.name}} </span>
+                </td>
+                <td class="td">
+                    <span id="email"> {{entry.email}}</span>
+                </td>
+                <td id="icons" class="td">
+                    <iron-icon icon="create" on-click="_updateAdmin"></iron-icon>
+                    <iron-icon icon="delete" on-click="_deleteAdmin"></iron-icon>
+                </td>
+            </tr>
+        </table>
 
     </template>
 
@@ -147,6 +159,7 @@
 
 
             _updateAdmin(){
+                console.log("dispatching..");
                 this.dispatchEvent(new CustomEvent('update-admin', {
                     bubbles: true, composed: true, detail: {
                         id: this.entry.id,
